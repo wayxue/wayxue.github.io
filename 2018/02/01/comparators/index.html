@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Comparable &amp;amp; Comparator Comparable 和 Comparator 都是用来实现集合中元素的比较、排序的。 Comparable 是在集合内部定义的方法实现排序，需要排序的元素实现Comparable 接口，位于 java.util 下。 Comparator 是在集合外部实现的排序，需要有一个实现了Comparator 接口的类，位于 java.lang 下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2018/02/01/comparators/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Comparable &amp;amp; Comparator Comparable 和 Comparator 都是用来实现集合中元素的比较、排序的。 Comparable 是在集合内部定义的方法实现排序，需要排序的元素实现Comparable 接口，位于 java.util 下。 Comparator 是在集合外部实现的排序，需要有一个实现了Comparator 接口的类，位于 java.lang 下。">
+<meta property="og:updated_time" content="2018-01-15T13:38:16.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="Comparable &amp;amp; Comparator Comparable 和 Comparator 都是用来实现集合中元素的比较、排序的。 Comparable 是在集合内部定义的方法实现排序，需要排序的元素实现Comparable 接口，位于 java.util 下。 Comparator 是在集合外部实现的排序，需要有一个实现了Comparator 接口的类，位于 java.lang 下。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-comparators" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/01/comparators/" class="article-date">
+  <time datetime="2018-02-01T02:47:11.091Z" itemprop="datePublished">2018-02-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Comparable-amp-Comparator"><a href="#Comparable-amp-Comparator" class="headerlink" title="Comparable &amp; Comparator"></a>Comparable &amp; Comparator</h1><ul>
+<li>Comparable 和 Comparator 都是用来实现集合中元素的比较、排序的。</li>
+<li>Comparable 是在集合内部定义的方法实现排序，需要排序的元素实现Comparable 接口，位于 java.util 下。</li>
+<li>Comparator 是在集合外部实现的排序，需要有一个实现了Comparator 接口的类，位于 java.lang 下。</li>
+<li>Comparable 是一个对象本身就已经支持自比较所需要实现的接口，可完成比价大小操作。如String、 Integer 自己就实现了 Comparable 接口。自定义的类实现Comparable 接口，并加入list容器中，能够通过Collections 中的sort方法排序，默认按照接口提供的compareTo 方法排序。</li>
+<li>Comparator 是一个专用的比较器，当这个对象不支持字比较或者字比较函数不能满足要求时，可写一个比较器来完成两个对象之间大小的比较。Comparator 体现了一种策略模式，就是不改变对象自身，而用一个策略对象来改变它的行为。</li>
+<li>Comparable 是自己完成比较，Comparator 是外部程序实现比较。</li>
+<li>Comparator 实现了算法和数据分离，Comparable 是支持字比较的，当字比较不能满足需求时，可以使用Comparator 来扩展比较规则。</li>
+<li>Colllections.sort() 方法参数不同，Comparator 排序时，需要调价一个比较器对象，该对象实现了Comparator 接口。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/02/01/comparators/" data-id="cjd3whpp40003sgfwvsvkc4js" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/02/01/excellent/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/01/gitlab配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/01/动态代理/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/01/String/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/01/获取aop代理对象的三种方式/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/01/excellent/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/01/comparators/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -7,12 +7,16 @@
   
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="动态代理 无代理  1234public interface TradeService &amp;#123;    public String trade();&amp;#125; 1234567public class TradeServiceImpl implements TradeService &amp;#123;    @Override    public String trade() &amp;#123;">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/02/01/动态代理/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="动态代理 无代理  1234public interface TradeService &amp;#123;    public String trade();&amp;#125; 1234567public class TradeServiceImpl implements TradeService &amp;#123;    @Override    public String trade() &amp;#123;">
+<meta property="og:updated_time" content="2018-01-22T09:26:22.744Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="动态代理 无代理  1234public interface TradeService &amp;#123;    public String trade();&amp;#125; 1234567public class TradeServiceImpl implements TradeService &amp;#123;    @Override    public String trade() &amp;#123;">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -59,9 +63,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-动态代理" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-动态代理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/02/01/动态代理/" class="article-date">
   <time datetime="2018-02-01T02:47:21.376Z" itemprop="datePublished">2018-02-01</time>
@@ -119,344 +121,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-String" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/01/String/" class="article-date">
-  <time datetime="2018-02-01T02:47:21.375Z" itemprop="datePublished">2018-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="StringBuilder-amp-StringBuffer"><a href="#StringBuilder-amp-StringBuffer" class="headerlink" title="StringBuilder &amp; StringBuffer"></a>StringBuilder &amp; StringBuffer</h1><ul>
-<li>String ：<br>  String a = “abc”;<br>  String b = “1”;<br>  String c = a + b; //三个对象<br>  String d = “abc” + “1”; //一个对象</li>
-<li>StringBuffer : 线程安全的；</li>
-<li>StringBuilder : 线程不安全的；<blockquote>
-<p>三者执行速度：String &lt; StringBuffer &lt; StringBuilder</p>
-</blockquote>
-</li>
-</ul>
+  
+    <a href="/2018/02/01/String/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/01/String/" data-id="cjd3whpoo0000sgfw8p3okvht" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="post-获取aop代理对象的三种方式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/01/获取aop代理对象的三种方式/" class="article-date">
-  <time datetime="2018-02-01T02:47:21.373Z" itemprop="datePublished">2018-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="如何获取AOP代理对象"><a href="#如何获取AOP代理对象" class="headerlink" title="如何获取AOP代理对象"></a>如何获取AOP代理对象</h1><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><ul>
-<li>通过ThreadLocal 获取</li>
-</ul>
-<p>AopContext.currentProxy();</p>
-<pre><code>@Override
-@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-public void child() {
-
-    userMapper.save(&quot;zhaobuzhu&quot;, 12);
-    throw new RuntimeException();
-}
-
-@Override
-@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-public void father() {
-
-    try {
-        UserService userService = (UserService) AopContext.currentProxy();
-        userService.child();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    userMapper.save(&quot;wangbaobao&quot;, 12);
-}
-</code></pre><ul>
-<li>使用AOP 代理后的方法调用执行流程</li>
-</ul>
-<blockquote>
-<ol>
-<li>调用者调用代理对象，通过 ThreadLocal 暴露代理对象, AopContext.setCurrentProxy(proxy) ，并保存上次代理对象 oldProxy 。</li>
-<li>开启事物。</li>
-<li>进行其他代理操作。</li>
-<li>调用目标对象的目标方法。</li>
-<li>目标方法调用返回。</li>
-<li>进行其他代理操作。</li>
-<li>关闭事物。</li>
-<li>还原 ThreadLocal 绑定的代理对象为上次代理对象 AopContext.setCurrentProxy(oldProxy) 。    返回至调用处。<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2></li>
-</ol>
-<ul>
-<li>通过初始化方法在目标对象中注入代理对象</li>
-</ul>
-</blockquote>
-<pre><code>@Autowired
-private ApplicationContext context;
-
-private UserService userServiceProxy;
-
-@PostConstruct
-public void setUserServiceProxy() {
-
-    this.userServiceProxy = context.getBean(UserService.class);
-}
-
-@Override
-@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-public void father2() {
-
-    try {
-        userServiceProxy.child();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    userMapper.save(&quot;wangbaobao&quot;, 12);
-}
-</code></pre><ul>
-<li>如果存在循环依赖注入，可能会出现问题。</li>
-</ul>
-<h2 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h2><ul>
-<li>通过 BeanPostProcessor 在目标对象中注入代理对象</li>
-</ul>
-<ol>
-<li><p>定义BeanPostProcessor 需要使用的标识接口</p>
-<pre><code>public interface BeanSelfAware {
-
-    /**
-     * 注入自己的属性
-     * @param bean
-     */
-    void setSelf(Object bean);
-}
-</code></pre></li>
-<li><p>Bean 实现标识接口</p>
-<pre><code>@Service
-@Transactional(isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-public class UserServiceImpl implements UserService, BeanSelfAware {
-    private UserService self;
-
-    @Override
-    public void father3() {
-
-        try {
-            self.child();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        userMapper.save(&quot;wangbaobao&quot;, 12);
-
-    }
-
-    @Override
-    public void setSelf(Object self) {
-        this.self = (UserService) self;
-    }
-}
-</code></pre><ol>
-<li><p>定义类实现 BeanPostProcessor </p>
-<pre><code>public class InjectBeanSelfProcessor implements BeanPostProcessor {
-    @Override
-    public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
-        return null;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
-
-        if (o instanceof BeanSelfAware) {
-            System.out.println(&quot;inject proxy&quot; + o.getClass());
-            BeanSelfAware myBean = (BeanSelfAware) o;
-            myBean.setSelf(o);
-            return myBean;
-        }
-        return o;
-    }
-}
-</code></pre></li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>可能不支持循环依赖，可能出现问题。</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/01/获取aop代理对象的三种方式/" data-id="cjd3whpp60005sgfwirvnid60" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-excellent" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/01/excellent/" class="article-date">
-  <time datetime="2018-02-01T02:47:11.093Z" itemprop="datePublished">2018-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="登高-杜甫"><a href="#登高-杜甫" class="headerlink" title="登高 杜甫"></a>登高 杜甫</h1><h2 id="风急天高猿啸哀，渚清沙白鸟飞回。"><a href="#风急天高猿啸哀，渚清沙白鸟飞回。" class="headerlink" title="风急天高猿啸哀，渚清沙白鸟飞回。"></a>风急天高猿啸哀，渚清沙白鸟飞回。</h2><h2 id="无边落木萧萧下，不尽长江滚滚来。"><a href="#无边落木萧萧下，不尽长江滚滚来。" class="headerlink" title="无边落木萧萧下，不尽长江滚滚来。"></a>无边落木萧萧下，不尽长江滚滚来。</h2><h2 id="万里悲秋常作客，百年多病独登台。"><a href="#万里悲秋常作客，百年多病独登台。" class="headerlink" title="万里悲秋常作客，百年多病独登台。"></a>万里悲秋常作客，百年多病独登台。</h2><h2 id="艰难苦恨繁霜鬓，潦倒新停浊酒杯。"><a href="#艰难苦恨繁霜鬓，潦倒新停浊酒杯。" class="headerlink" title="艰难苦恨繁霜鬓，潦倒新停浊酒杯。"></a>艰难苦恨繁霜鬓，潦倒新停浊酒杯。</h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/01/excellent/" data-id="cjd3whpox0002sgfw52qwf5f8" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-comparators" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/01/comparators/" class="article-date">
-  <time datetime="2018-02-01T02:47:11.091Z" itemprop="datePublished">2018-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Comparable-amp-Comparator"><a href="#Comparable-amp-Comparator" class="headerlink" title="Comparable &amp; Comparator"></a>Comparable &amp; Comparator</h1><ul>
-<li>Comparable 和 Comparator 都是用来实现集合中元素的比较、排序的。</li>
-<li>Comparable 是在集合内部定义的方法实现排序，需要排序的元素实现Comparable 接口，位于 java.util 下。</li>
-<li>Comparator 是在集合外部实现的排序，需要有一个实现了Comparator 接口的类，位于 java.lang 下。</li>
-<li>Comparable 是一个对象本身就已经支持自比较所需要实现的接口，可完成比价大小操作。如String、 Integer 自己就实现了 Comparable 接口。自定义的类实现Comparable 接口，并加入list容器中，能够通过Collections 中的sort方法排序，默认按照接口提供的compareTo 方法排序。</li>
-<li>Comparator 是一个专用的比较器，当这个对象不支持字比较或者字比较函数不能满足要求时，可写一个比较器来完成两个对象之间大小的比较。Comparator 体现了一种策略模式，就是不改变对象自身，而用一个策略对象来改变它的行为。</li>
-<li>Comparable 是自己完成比较，Comparator 是外部程序实现比较。</li>
-<li>Comparator 实现了算法和数据分离，Comparable 是支持字比较的，当字比较不能满足需求时，可以使用Comparator 来扩展比较规则。</li>
-<li>Colllections.sort() 方法参数不同，Comparator 排序时，需要调价一个比较器对象，该对象实现了Comparator 接口。</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/01/comparators/" data-id="cjd3whpp40003sgfwvsvkc4js" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-gitlab配置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/01/gitlab配置/" class="article-date">
-  <time datetime="2018-02-01T02:47:11.089Z" itemprop="datePublished">2018-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="同时使用github和gitlab的方法"><a href="#同时使用github和gitlab的方法" class="headerlink" title="同时使用github和gitlab的方法"></a>同时使用github和gitlab的方法</h1><ol>
-<li>生成gitlab秘钥<br> ssh-keygen -t rsa -C “email”<br> 重新指定生成秘钥的名称，地址不变</li>
-<li>在.ssh 文件夹下添加 config 文件，内容：<br> #github<br> Host github     <pre><code>HostName github.com                   
-IdentityFile ~/.ssh/id_rsa                   
-</code></pre> #gitlab<br> Host gitlab  <pre><code>HostName gitlab.com  
-IdentityFile ~/.ssh/gitlab_id_rsa
-</code></pre></li>
-<li>初始化<br> git config –local user.name “gitlab用户名”<br> git config –local user.email “email”</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/01/gitlab配置/" data-id="cjd3whpp70006sgfwck8uzkji" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/01/hello-world/" class="article-date">
-  <time datetime="2018-02-01T01:05:40.794Z" itemprop="datePublished">2018-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/01/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/01/hello-world/" data-id="cjd3whpou0001sgfwy40ymmwv" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
 
 </section>
         
