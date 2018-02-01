@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>yitaqi</title>
+  <title>如何获取 AOP 代理对象 | yitaqi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="如何获取AOP代理对象方法一 通过ThreadLocal 获取  AopContext.currentProxy(); @Override @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class) public void c">
+  <meta name="description" content="方法一 通过ThreadLocal 获取AopContext.currentProxy();1234567891011121314151617181920@Override@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.clas">
 <meta property="og:type" content="article">
-<meta property="og:title" content="yitaqi">
+<meta property="og:title" content="如何获取 AOP 代理对象">
 <meta property="og:url" content="http://yoursite.com/2018/02/01/获取aop代理对象的三种方式/index.html">
 <meta property="og:site_name" content="yitaqi">
-<meta property="og:description" content="如何获取AOP代理对象方法一 通过ThreadLocal 获取  AopContext.currentProxy(); @Override @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class) public void c">
-<meta property="og:updated_time" content="2018-01-31T01:18:51.569Z">
+<meta property="og:description" content="方法一 通过ThreadLocal 获取AopContext.currentProxy();1234567891011121314151617181920@Override@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.clas">
+<meta property="og:updated_time" content="2018-02-01T07:03:27.406Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="yitaqi">
-<meta name="twitter:description" content="如何获取AOP代理对象方法一 通过ThreadLocal 获取  AopContext.currentProxy(); @Override @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class) public void c">
+<meta name="twitter:title" content="如何获取 AOP 代理对象">
+<meta name="twitter:description" content="方法一 通过ThreadLocal 获取AopContext.currentProxy();1234567891011121314151617181920@Override@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.clas">
   
     <link rel="alternate" href="/atom.xml" title="yitaqi" type="application/atom+xml">
   
@@ -41,7 +41,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -77,39 +77,22 @@
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何获取 AOP 代理对象
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
         <!-- Table of Contents -->
         
-        <h1 id="如何获取AOP代理对象"><a href="#如何获取AOP代理对象" class="headerlink" title="如何获取AOP代理对象"></a>如何获取AOP代理对象</h1><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><ul>
-<li>通过ThreadLocal 获取</li>
-</ul>
-<p>AopContext.currentProxy();</p>
-<pre><code>@Override
-@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-public void child() {
-
-    userMapper.save(&quot;zhaobuzhu&quot;, 12);
-    throw new RuntimeException();
-}
-
-@Override
-@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-public void father() {
-
-    try {
-        UserService userService = (UserService) AopContext.currentProxy();
-        userService.child();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    userMapper.save(&quot;wangbaobao&quot;, 12);
-}
-</code></pre><ul>
-<li>使用AOP 代理后的方法调用执行流程</li>
-</ul>
-<blockquote>
-<ol>
+        <h2 id="方法一-通过ThreadLocal-获取"><a href="#方法一-通过ThreadLocal-获取" class="headerlink" title="方法一 通过ThreadLocal 获取"></a>方法一 通过ThreadLocal 获取</h2><p>AopContext.currentProxy();<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">child</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">       userMapper.save(<span class="string">"zhaobuzhu"</span>, <span class="number">12</span>);</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">father</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        UserService userService = (UserService) AopContext.currentProxy();</span><br><span class="line">        userService.child();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    userMapper.save(<span class="string">"wangbaobao"</span>, <span class="number">12</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用AOP-代理后的方法调用执行流程"><a href="#使用AOP-代理后的方法调用执行流程" class="headerlink" title="使用AOP 代理后的方法调用执行流程"></a>使用AOP 代理后的方法调用执行流程</h3><ol>
 <li>调用者调用代理对象，通过 ThreadLocal 暴露代理对象, AopContext.setCurrentProxy(proxy) ，并保存上次代理对象 oldProxy 。</li>
 <li>开启事物。</li>
 <li>进行其他代理操作。</li>
@@ -117,96 +100,21 @@ public void father() {
 <li>目标方法调用返回。</li>
 <li>进行其他代理操作。</li>
 <li>关闭事物。</li>
-<li>还原 ThreadLocal 绑定的代理对象为上次代理对象 AopContext.setCurrentProxy(oldProxy) 。    返回至调用处。<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2></li>
+<li>还原 ThreadLocal 绑定的代理对象为上次代理对象 AopContext.setCurrentProxy(oldProxy) 。    返回至调用处。<h2 id="方法二-通过初始化方法在目标对象中注入代理对象"><a href="#方法二-通过初始化方法在目标对象中注入代理对象" class="headerlink" title="方法二 通过初始化方法在目标对象中注入代理对象"></a>方法二 通过初始化方法在目标对象中注入代理对象</h2></li>
 </ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> ApplicationContext context;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> UserService userServiceProxy;</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserServiceProxy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.userServiceProxy = context.getBean(UserService.class);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">father2</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        userServiceProxy.child();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    userMapper.save(<span class="string">"wangbaobao"</span>, <span class="number">12</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>通过初始化方法在目标对象中注入代理对象</li>
-</ul>
-</blockquote>
-<pre><code>@Autowired
-private ApplicationContext context;
-
-private UserService userServiceProxy;
-
-@PostConstruct
-public void setUserServiceProxy() {
-
-    this.userServiceProxy = context.getBean(UserService.class);
-}
-
-@Override
-@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-public void father2() {
-
-    try {
-        userServiceProxy.child();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    userMapper.save(&quot;wangbaobao&quot;, 12);
-}
-</code></pre><ul>
 <li>如果存在循环依赖注入，可能会出现问题。</li>
 </ul>
-<h2 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h2><ul>
-<li>通过 BeanPostProcessor 在目标对象中注入代理对象</li>
-</ul>
-<ol>
+<h2 id="方法三-通过-BeanPostProcessor-在目标对象中注入代理对象"><a href="#方法三-通过-BeanPostProcessor-在目标对象中注入代理对象" class="headerlink" title="方法三 通过 BeanPostProcessor 在目标对象中注入代理对象"></a>方法三 通过 BeanPostProcessor 在目标对象中注入代理对象</h2><ol>
 <li><p>定义BeanPostProcessor 需要使用的标识接口</p>
-<pre><code>public interface BeanSelfAware {
-
-    /**
-     * 注入自己的属性
-     * @param bean
-     */
-    void setSelf(Object bean);
-}
-</code></pre></li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BeanSelfAware</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注入自己的属性</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> bean</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setSelf</span><span class="params">(Object bean)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>Bean 实现标识接口</p>
-<pre><code>@Service
-@Transactional(isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-public class UserServiceImpl implements UserService, BeanSelfAware {
-    private UserService self;
-
-    @Override
-    public void father3() {
-
-        try {
-            self.child();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        userMapper.save(&quot;wangbaobao&quot;, 12);
-
-    }
-
-    @Override
-    public void setSelf(Object self) {
-        this.self = (UserService) self;
-    }
-}
-</code></pre><ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Transactional</span>(isolation = Isolation.DEFAULT, rollbackFor = Exception.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span>, <span class="title">BeanSelfAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> UserService self;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">father3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	    <span class="keyword">try</span> &#123;</span><br><span class="line">	        self.child();</span><br><span class="line">	    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">	        e.printStackTrace();</span><br><span class="line">	    &#125;</span><br><span class="line">	    userMapper.save(<span class="string">"wangbaobao"</span>, <span class="number">12</span>);</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSelf</span><span class="params">(Object self)</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">this</span>.self = (UserService) self;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>定义类实现 BeanPostProcessor </p>
-<pre><code>public class InjectBeanSelfProcessor implements BeanPostProcessor {
-    @Override
-    public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
-        return null;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
-
-        if (o instanceof BeanSelfAware) {
-            System.out.println(&quot;inject proxy&quot; + o.getClass());
-            BeanSelfAware myBean = (BeanSelfAware) o;
-            myBean.setSelf(o);
-            return myBean;
-        }
-        return o;
-    }
-}
-</code></pre></li>
-</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InjectBeanSelfProcessor</span> <span class="keyword">implements</span> <span class="title">BeanPostProcessor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">postProcessBeforeInitialization</span><span class="params">(Object o, String s)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">postProcessAfterInitialization</span><span class="params">(Object o, String s)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (o <span class="keyword">instanceof</span> BeanSelfAware) &#123;</span><br><span class="line">            System.out.println(<span class="string">"inject proxy"</span> + o.getClass());</span><br><span class="line">            BeanSelfAware myBean = (BeanSelfAware) o;</span><br><span class="line">            myBean.setSelf(o);</span><br><span class="line">            <span class="keyword">return</span> myBean;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> o;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <ul>
@@ -216,7 +124,7 @@ public class UserServiceImpl implements UserService, BeanSelfAware {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/02/01/获取aop代理对象的三种方式/" data-id="cjd3xlcrt0005ccfwwzy4xjvt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/02/01/获取aop代理对象的三种方式/" data-id="cjd45rgba00033cfw8pkxqtoa" class="article-share-link">分享</a>
       
       
       
@@ -226,7 +134,7 @@ public class UserServiceImpl implements UserService, BeanSelfAware {
     
  <script src="/jquery/jquery.min.js"></script>
   <div id="random_posts">
-    <h2>Recommended Posts</h2>
+    <h2>推荐文章</h2>
     <div class="random_posts_ul">
       <script>
           var random_count =4
@@ -269,18 +177,18 @@ public class UserServiceImpl implements UserService, BeanSelfAware {
 <nav id="article-nav">
   
     <a href="/2018/02/01/String/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          (no title)
+          String
         
       </div>
     </a>
   
   
     <a href="/2018/02/01/excellent/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title"></div>
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">登高 杜甫</div>
     </a>
   
 </nav>
@@ -314,9 +222,9 @@ public class UserServiceImpl implements UserService, BeanSelfAware {
     
       <div class="widget" id="toc-widget-fixed">
       
-        <strong class="toc-title">Content</strong>
+        <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#如何获取AOP代理对象"><span class="toc-number">1.</span> <span class="toc-text">如何获取AOP代理对象</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#方法一"><span class="toc-number">1.1.</span> <span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法二"><span class="toc-number">1.2.</span> <span class="toc-text">方法二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法三"><span class="toc-number">1.3.</span> <span class="toc-text">方法三</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#方法一-通过ThreadLocal-获取"><span class="toc-number">1.</span> <span class="toc-text">方法一 通过ThreadLocal 获取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用AOP-代理后的方法调用执行流程"><span class="toc-number">1.1.</span> <span class="toc-text">使用AOP 代理后的方法调用执行流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法二-通过初始化方法在目标对象中注入代理对象"><span class="toc-number">2.</span> <span class="toc-text">方法二 通过初始化方法在目标对象中注入代理对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法三-通过-BeanPostProcessor-在目标对象中注入代理对象"><span class="toc-number">3.</span> <span class="toc-text">方法三 通过 BeanPostProcessor 在目标对象中注入代理对象</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -346,10 +254,10 @@ public class UserServiceImpl implements UserService, BeanSelfAware {
   <div class="outer">
     <div id="footer-left">
       &copy; 2014 - 2018 John Doe&nbsp;|&nbsp;
-      Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">
-      Contact&nbsp;|&nbsp;youemail@outlook.com
+      联系方式&nbsp;|&nbsp;youemail@outlook.com
     </div>
   </div>
 </footer>
