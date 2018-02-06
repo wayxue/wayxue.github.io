@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>登高 杜甫 | yitaqi</title>
+  <title>PLSQL 优化 | yitaqi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="风急天高猿啸哀，渚清沙白鸟飞回。                              无边落木萧萧下，不尽长江滚滚来。 万里悲秋常作客，百年多病独登台。 艰难苦恨繁霜鬓，潦倒新停浊酒杯。">
+  <meta name="description" content="程序性能分析方法 Explain Plan在 PL/SQL Developer 工具中有一个Explain Plan 分析的功能，这个功能可以帮助我们分析 SQL 语句的执行情况。比如是否使用了索引、使用那些索引、使用索引的效果及执行成本等。  执行 Explain Plan 分析功能  方法一：在 SQL Window 程序界面下，点击快捷键 F5 。方法二：在 SQL Window 程序界面下">
 <meta property="og:type" content="article">
-<meta property="og:title" content="登高 杜甫">
-<meta property="og:url" content="http://yitaqi.top/2018/02/01/excellent/index.html">
+<meta property="og:title" content="PLSQL 优化">
+<meta property="og:url" content="http://yitaqi.top/2018/02/02/PLSQL 程序性能分析及优化/index.html">
 <meta property="og:site_name" content="yitaqi">
-<meta property="og:description" content="风急天高猿啸哀，渚清沙白鸟飞回。                              无边落木萧萧下，不尽长江滚滚来。 万里悲秋常作客，百年多病独登台。 艰难苦恨繁霜鬓，潦倒新停浊酒杯。">
-<meta property="og:updated_time" content="2018-02-01T06:17:26.470Z">
+<meta property="og:description" content="程序性能分析方法 Explain Plan在 PL/SQL Developer 工具中有一个Explain Plan 分析的功能，这个功能可以帮助我们分析 SQL 语句的执行情况。比如是否使用了索引、使用那些索引、使用索引的效果及执行成本等。  执行 Explain Plan 分析功能  方法一：在 SQL Window 程序界面下，点击快捷键 F5 。方法二：在 SQL Window 程序界面下">
+<meta property="og:image" content="http://yitaqi.top/image/1517541308.jpg">
+<meta property="og:updated_time" content="2018-02-02T03:21:03.016Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="登高 杜甫">
-<meta name="twitter:description" content="风急天高猿啸哀，渚清沙白鸟飞回。                              无边落木萧萧下，不尽长江滚滚来。 万里悲秋常作客，百年多病独登台。 艰难苦恨繁霜鬓，潦倒新停浊酒杯。">
+<meta name="twitter:title" content="PLSQL 优化">
+<meta name="twitter:description" content="程序性能分析方法 Explain Plan在 PL/SQL Developer 工具中有一个Explain Plan 分析的功能，这个功能可以帮助我们分析 SQL 语句的执行情况。比如是否使用了索引、使用那些索引、使用索引的效果及执行成本等。  执行 Explain Plan 分析功能  方法一：在 SQL Window 程序界面下，点击快捷键 F5 。方法二：在 SQL Window 程序界面下">
+<meta name="twitter:image" content="http://yitaqi.top/image/1517541308.jpg">
   
     <link rel="alternate" href="/atom.xml" title="yitaqi" type="application/atom+xml">
   
@@ -67,10 +69,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-excellent" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-PLSQL 程序性能分析及优化" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/02/01/excellent/" class="article-date">
-  <time datetime="2018-02-01T02:47:11.093Z" itemprop="datePublished">2018-02-01</time>
+    <a href="/2018/02/02/PLSQL 程序性能分析及优化/" class="article-date">
+  <time datetime="2018-02-02T03:01:11.558Z" itemprop="datePublished">2018-02-02</time>
 </a>
     
   </div>
@@ -81,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      登高 杜甫
+      PLSQL 优化
     </h1>
   
 
@@ -91,17 +93,19 @@
       
         <!-- Table of Contents -->
         
-        <blockquote>
-<p>风急天高猿啸哀，渚清沙白鸟飞回。                             </p>
-<p>无边落木萧萧下，不尽长江滚滚来。</p>
-<p>万里悲秋常作客，百年多病独登台。</p>
-<p>艰难苦恨繁霜鬓，潦倒新停浊酒杯。</p>
-</blockquote>
+        <h2 id="程序性能分析方法"><a href="#程序性能分析方法" class="headerlink" title="程序性能分析方法"></a>程序性能分析方法</h2><ul>
+<li><h3 id="Explain-Plan"><a href="#Explain-Plan" class="headerlink" title="Explain Plan"></a>Explain Plan</h3><p>在 PL/SQL Developer 工具中有一个Explain Plan 分析的功能，这个功能可以帮助我们分析 SQL 语句的执行情况。比如是否使用了索引、使用那些索引、使用索引的效果及执行成本等。</p>
+<ol>
+<li>执行 Explain Plan 分析功能</li>
+</ol>
+<p>方法一：在 SQL Window 程序界面下，点击快捷键 F5 。<br>方法二：在 SQL Window 程序界面下，依次点击 “TOOLS -&gt; Explain Plan” 菜单。<br><img src="http://yitaqi.top/image/1517541308.jpg" alt=""></p>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjd49waix00020sfwba1utu19" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/02/PLSQL 程序性能分析及优化/" data-id="cjd5d57g90000lofw81wmn2xn" class="article-share-link">分享</a>
       
       
       
@@ -153,19 +157,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/02/01/获取aop代理对象的三种方式/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          如何获取 AOP 代理对象
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/02/01/comparators/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/02/01/动态代理/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">comparators</div>
+      <div class="article-nav-title">动态代理</div>
     </a>
   
 </nav>
@@ -193,42 +188,24 @@
 
   
     
-  
+    <div class="widget-wrap">
     
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/02/02/PLSQL 程序性能分析及优化/">PLSQL 优化</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/01/动态代理/">动态代理</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/01/String/">String</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/01/获取aop代理对象的三种方式/">如何获取 AOP 代理对象</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/01/excellent/">登高 杜甫</a>
-          </li>
-        
-      </ul>
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#程序性能分析方法"><span class="toc-number">1.</span> <span class="toc-text">程序性能分析方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Explain-Plan"><span class="toc-number">1.1.</span> <span class="toc-text">Explain Plan</span></a></li></ol></li></ol>
+          </div>
+      </div>
     </div>
-  </div>
 
+  
+    
+
+  
+    
+  
+    
   
     
 
