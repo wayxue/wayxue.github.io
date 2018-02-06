@@ -89,19 +89,93 @@
       
         <!-- Table of Contents -->
         
-        <h2 id="程序性能分析方法"><a href="#程序性能分析方法" class="headerlink" title="程序性能分析方法"></a>程序性能分析方法</h2><ul>
-<li><h3 id="Explain-Plan"><a href="#Explain-Plan" class="headerlink" title="Explain Plan"></a>Explain Plan</h3><p>在 PL/SQL Developer 工具中有一个Explain Plan 分析的功能，这个功能可以帮助我们分析 SQL 语句的执行情况。比如是否使用了索引、使用那些索引、使用索引的效果及执行成本等。</p>
+        <h2 id="程序性能分析方法"><a href="#程序性能分析方法" class="headerlink" title="程序性能分析方法"></a>程序性能分析方法</h2><p>在 PL/SQL Developer 工具中有一个Explain Plan 分析的功能，这个功能可以帮助我们分析 SQL 语句的执行情况。比如是否使用了索引、使用那些索引、使用索引的效果及执行成本等。</p>
 <ol>
-<li>执行 Explain Plan 分析功能</li>
-</ol>
-<p>方法一：在 SQL Window 程序界面下，点击快捷键 F5 。<br>方法二：在 SQL Window 程序界面下，依次点击 “TOOLS -&gt; Explain Plan” 菜单。<br><img src="http://yitaqi.top/image/1517541308.jpg" alt=""></p>
+<li><p>执行 Explain Plan 分析功能</p>
+<p> 方法一：在 SQL Window 程序界面下，点击快捷键 F5 。<br> 方法二：在 SQL Window 程序界面下，依次点击 “TOOLS -&gt; Explain Plan” 菜单。<img src="/image/1517541308.jpg" alt=""></p>
 </li>
+<li><p>分析内容说明</p>
+<ul>
+<li><p>Optimizer goal: 使用的优化器模式。在oracle10g 前默认的优化模式是CHOOSE，10g 及以上版本默认是ALL_ROWS， 采用基于成本的优化器。建议不调整，使用默认即可。</p>
+<p>  ORALCE de 优化器 ：<br>  a. RULE(基于规则) b. <strong>COST(基于成本）</strong>c. CHOOSE(选择性）<br>  设置缺省的优化器，可以通过对 init.ora 文件中 OPTIMIZER_MODE 参数的各种声明，如果RULE,COSE,CHOOSE,ALL_ROWS,FIRST_ROWS ,你当然也在SQL 句级或是回话（session）级对其进行覆盖。<br>  为了使用基于成本的优化器（CBO，Cost_Based Optimizer),需要经常运行 analyze 或 DBMS_STATS.gather_table_stats 分析明亮，以增加数据库中的对象统计信息（object statistics）的准确性。<br>  如果数据可的优化器模式设置为选择性（CHOOSE），那么实际的优化器模式将和是否运行过 analyze 命令有关。如果table 已经被分析过，优化器模式将自动成为 CBO ，反之，数据可将采用RULE 形式的优化器。</p>
+</li>
+<li><p>Description : 解释计划，从解释计划上能看到哪个条件语句使用 了索引，哪个没有使用，哪个表使用了索引，使用了哪个索引，那些表是全表扫描的（TABLE ACCESS FULL）。</p>
+<p>  全表扫描（TABLE ACCESS FULL) 肯定是速度最慢的，如果是大数量的表，那么这语句是绝对影响性能的。<br>  索引常见的使用类型：<br>  1.INDEX UNIQUE SCAN：唯一索引扫描，速度最快。<br>  2.INDEX RANGE SCAN：范围索引扫描，使用这个索引时，就需要看 COST、Cardinality、Bytes 的打消了。另外使用了索引也不一定性能就高，因为索引使用也有效率的情况。如果特别大，有时候还可能速度低于全表扫描的速度。</p>
+</li>
+<li>Cost：基于成本的优化器权重值。<strong>值越小程序执行效率越高。</strong>如果采用基于规则的优化方式，该列值为空。</li>
+<li>Cardinality：所访问函数的估计值。</li>
+<li>Bytes：所访问字节的估计值。</li>
+<li>通过设置，我们还能看到更多的信息，例如：CPU 使用、时间等。</li>
 </ul>
+</li>
+</ol>
+<h2 id="PLSQL-优化的核心思想"><a href="#PLSQL-优化的核心思想" class="headerlink" title="PLSQL 优化的核心思想"></a>PLSQL 优化的核心思想</h2><ol>
+<li><p>导致性能问题的内在原因<br> 导致系统性能出现问题从系统底层分析也就是如下几个原因：<br> 1）CPU 占用率过高，资源征用导致等待<br> 2）内存使用率过高，内存不足需要磁盘虚拟内存<br> 3）IO 占用率过高，磁盘访问需要等待</p>
+</li>
+<li><p>PLSQL 优化的核心思想<br>PLSQL 优化实际上就是避免出现“导致性能问题的内在原因”，实际上编写程序，以及性能问题跟踪应该本着这个核心思想去考虑解决问题。<br>1) PLSQL 程序占用CPU的情况<br> a 系统解析SQL 语句执行，会消耗 CPU 的使用<br> b 运算 （计算） 会消耗 CPU 的使用<br>2) PLSQL 程序占用内存的情况<br> a 读写数据都需要访问内存<br> b 内存不足时，也会使用磁盘<br>3) PLSQL 程序增大IO的情况<br> a 读写数据都需要访问磁盘IO<br> b 读取的数据越多，IO 就越大<br>大家都知道 CPU 现在都很高，计算速度非常快，访问内存的速度也很快，但磁盘访问相对前两个相比速度就差的非常大了，因此 PLSQL 性能优化的重点也就是减少IO 的瓶颈，换句话说就是尽量减少 IO 的访问。<br><strong> 性能的优先级 CPU -&gt; 内存 -&gt; IO，性能影响的因素一次递增。</strong>根据上面的分析，PLSQL 优化的核心思想为：<br> <strong>1.避免过多复杂的 SQL 脚本，减少系统的解析过程<br> 2.避免过多的无用的计算，例如：死循环<br> 3.避免浪费内存空间没有必要的 SQL 脚本，导致内存不足<br> 4.内存中计算和访问的速度很快<br> 5.尽可能的减少磁盘的访问的数据量，该原则是 PLSQL 优化中重要思想<br> 6.尽可能的减少磁盘的访问的次数，该原则是 PLSQL 优化中重要思想</strong></p>
+</li>
+</ol>
+<h2 id="程序书写规范及优化原则"><a href="#程序书写规范及优化原则" class="headerlink" title="程序书写规范及优化原则"></a>程序书写规范及优化原则</h2><h3 id="书写方面"><a href="#书写方面" class="headerlink" title="书写方面"></a>书写方面</h3><ol>
+<li>SQL 语句要统一写成大写<br> 说明： SQL 语句转换成大写，可缩短写 SQL 的解析时间。通过统一成大写，可提高 SQL 的再利用率，缩短 SQL 解析时间。</li>
+<li>设计到多表检索时，明确地为每个字段指定表名<br> 通过在A_TABLE、B_TABLE 中指定别名 A、B，就可以不需要调查 A_ITEM、B_ITEM、A_KEY、B_KEY 是哪个表中的项目，从而缩短 SQL 解析时间。<br> 例如：<br> 高效的写法：<br> SELECT A.A_ITEM,B.B_ITEM FROM A_TABLE A,B_TABLE B WHERE A.A_KEY = B.B_KEY;<br> 低效的写法：<br> SELECT A_ITEM FROM A_TABLE,B_TABLE WHERE A_KEY = B_KEY</li>
+<li>SELECT 字句中避免使用星号<br> 说明：<br> ORACLE 在解析的过程中，会将星号一次转换成所有的列明，这个工作是通过查询数据字典完成的，这意味着将耗费更多时间<br> 例如：<br> 高效的写法：<br> SELECT USERNAME FROM DBA_DIRECTORIES;<br> 低效的写法：<br> SELECT * FROM DBA_DIRECTORIES;</li>
+</ol>
+<h3 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h3><ol>
+<li>在进行多个表连接时，FROM 中的表的顺序要按照记录数有多到少的顺序来排序<br> 说明：<br> 只是基于规则的优化器 rule 中有效，目前我们 oracle 选择的优化器基本都不选择 rule，因此该问题不会出现，但为了安全和规范起见，建议编程习惯采用改规则。<br> ORACLE 的解析器按照从右到做的顺序处理FROM 字句中的表名，因此 FROM 字句中写在最后的表（基础表 driving table）将被最先被处理。在FROM 字句中包含多个表的情况下，你必须选择记录条数最少的表作为基础表，当 ORACLE 处理多个表时，会运用排序及合并的方式连接他们。首先，扫描第一个表（FROM 字句中最后的那个表）并对记录进行排序，然后扫描第二个表（FROM 字句中倒数第二个表），最后将所有表中检索出的记录与第一个表中合适记录进行合并。<br> 参考：<br> 只在基于规则的优化器 rule 中有效。 ORACLE 建议按此方式书写。<br> 减少多表关联：<br> 表关联的越多，查询速度就越慢，尽量减少多个表的关联，建议表关联不要超过3个（子查询也属于多表关联）。<br> 数据转换上会存在大数据量表的关联，关联多了会影响索引的效率，可以采用建立临时表的办法，有时更能提高速度。</li>
+<li>可以过滤掉最大数量记录的条件必须写在 WHERE 子句的末尾<br> 说明：<br> ORACLE 采用自下而上的顺序解析 WHERE 字句，根据这个原理，表之间的连接必须写在其他 WHERE 条件之前，那些可以过滤掉最大数量的条件必须写在 WHERE 子句的末尾。</li>
+<li>WHERE 子句中的连接顺序<br> 说明：<br> ORACLE 采用自下而上的顺序解析 WHERE 子句，根据这个原理，表之间的连接必须写在其他 WHERE 条件之前。</li>
+<li>不要通过 LIKE 运算来执行中间一致或后方一致的检索<br> 说明：<br> 中间或后方一致性检索时，索引时无效的。即%在常量前面索引就不会使用。<br> 举例：<br> 高效的写法：<br> SELECT <em> FROM USERS WHERE USERNAME LIKE ‘刘%’;<br> 低效的写法：<br> SELECT </em> FROM USERS WHERE USERNAME LIKE ‘%刘’;<br> SELECT * FROM USERS WHERE USERNAME LIKE ‘%刘%’;<br> 参考：<br> 重新分析一下看是否真的需要中间一致或后方一致检索，如果真的需要的话，看是否能需要重新规划一下。</li>
+<li>用 EXISTE 替代 IN<br> 说明：<br> 实际情况看，使用 exists 替换 in 效果不是很明显，基本一样。<br> 在许多基于基础表的查询中，为了满足一个条件，往往需要对另一个表进行连接。在这种情况下，使用 EXISTS（或 NOT EXISTS）通常将提高查询效率。</li>
+<li>用 NOT EXISTS 替代 NOT IN<br> 说明：<br> ORACLE 在10g 之前版本not in 都是最低效的语句，虽然在 10g 上 not in 做到了一些改进，但仍然还是存在一些问题，因此我们一定要使用 not exists 来替代 not in 的写法。<br> 在子查询中， NOT IN 字句将执行一个内部的排序和合并，无论在哪种情况下，NOT IN 都是最低效的（因为它对子查询中的表执行了一个全表遍历）。为了避免使用 NOT IN，我们可以把它改写成 NOT EXISTS。</li>
+<li>用表连接替换 EXISTS<br> 说明：<br> 在子查询的表和主表查询是多对一的情况，一般采用表连接的方式比EXISTS 更有效率。<br> 参考：<br> 到底 exists 和表关联哪种效率高，其实是根据两个表之间的数据量差别大小有关的，如果差别不大实际上速度基本差不多。</li>
+<li>用 EXISTS 替换 DISTINCT<br> 说明：<br> 当提交包含一堆多表信息（比如个人基本信息表和个人参保信息报）的查询时，避免在 SELECT 字句中使用 DISTINCT 。一般可以考虑使用 EXISTS 替换。<br> 举例：<br> 高效的写法：<br> SELECT P.PD_NAME FROM PRODUCT P WHERE EXISTS (SELECT 1 FROM TRADE WHERE PDNAME = P.PD_NAME)<br> 低效的写法：<br> SELECT DISTINCT P.PD_NAME<br> FROM PRODUCT P,TRADE T<br> WHERE P.PD_NAME = T.PDNAME</li>
+<li>用 WHERE 字句替换 HAVING 字句<br> 说明：<br> 比喵使用 HAVING 字句，HAVING 只会在检索出所有记录之后才对结果集进行过滤，这个处理需要排序，总计等操作，如果通过 WHERE 字句限制记录的数目，那就能减少这方面的开销。</li>
+<li>对于经常使用的 SQL 语句（循环处理中使用的 SQL 等），可以通过预编译、绑定变量来提高性能<br>说明：<br>由于 SQL 可以被在利用，所以可缩短 SQL 解析时间。</li>
+</ol>
+<h3 id="索引的使用"><a href="#索引的使用" class="headerlink" title="索引的使用"></a>索引的使用</h3><ol>
+<li>对于索引列不要执行 NULL 值得检索<br> 说明：<br> NULL 检索是指【查找没有的东西】，所以如果不全部都调查的话无法判断出是有还是没有。<br> 索引只做成【有】的数据。调整成不执行NULL 检索的 SQL，或者修改表的定义。<br> 对于索引咧使用is null 或 is not null 不会使用上索引，因为控制不存在与索引列中，所以 WHERE 字句中对索引列进行控制比较将使 ORACLE 停用该索引。<br> 参考：<br> 在实际开发中，对于这类的问题很难避免，如果不是特别影响速度或者要求速度的，可以忽略。</li>
+<li>对于索引列，不要使用“NOT”、“！=”、“&lt;&gt;” 比较运算符<br> 说明：<br> 可缩短SQL解析时间。<br> 避免在索引列上使用NOT ，NOT 不会是查询条件使用索引。对于 ！= 这样的判断也是不能使用的，索引只能告诉你什么存在于表中，而不能告诉你什么不存在与表中。<br> 高效的写法：<br> SELECT <em> FROM PRODUCT WHERE FPD IN (‘20’,’30’);<br> 低效的写法：<br> SELECT </em> FROM PRODUCT WHERE NOT FPD = ‘10’;</li>
+<li>用 &gt;= 替代 &gt;<br> 说明：<br> 虽然效果不是特别明显，但建议采用这种方式。<br> 参考：<br> 两者的区别在于，前者 DBMS 首先定位到 = 的记录并且向前扫描到第一个大于的记录，而后者 DBMS 将直接跳到第一个 = 的记录。</li>
+<li>对于索引列不要使用函数和计算是<br> 说明：<br> 索引将不能发挥索引的作用。<br> 举例：<br> 高效的写法：<br> SELECT FPD FROM PRODUCT WHERE FDT = TO_DATE(‘20180206’,’YYYYMMDD’);<br> 低效的写法：<br> SELECT FPD FROM PRODUCT WHERE TO_CHAR(FDT,’YYYYMMDD’) = ‘20180206’;<br> 参考：<br> 如必须使用，可考虑建函数索引。</li>
+<li>对于多键值索引，要按照索引的定义顺序来使用<br> 说明：<br> 如果索引是建立在多个列上，只有在它的第一个列（leading column）被where 字句引用时，优化器才会选择使用该索引。<br> 举例：<br> 高效的写法：<br> 在按照 KEY1 + KEY2 来定义索引的情况下：<br> SELECT * FROM A_TABLE A WHERE A.KEY1 = ‘KEY’ AND A.KEY2 = ‘ABC’;<br> 低效的写法：<br> SELECT * FROM A_TABLE A WHERE A.KEY2 = ‘ABC’；<br> 参考：<br> 总是使用索引的第一个列<br> 如果索引时间里在多个列上，只有在他的第一个列被 where 字句引用时，优化器才会选择使用该索引。如：<br> 符合索引：KEY1 + KEY2 + KEY3<br> SELECT * FROM A_TABLE WHERE KEY1 = ‘KEY’ – 可以使用索引<br> SELECT * FROM A_TABLE WHERE KEY2 = ‘ABC’ AND KEY3 = ‘123’ – 不可以使用索引<br> 如果不使用索引第一列基本上不会使用索引，使用索引要按照索引的顺序使用，另外使用复合索引的列越多，查询的速度越快。</li>
+<li>避免改变索引列的类型<br> 说明：<br> 索引列的条件如果类型不匹配，则不能使用索引。<br> 举例：<br> 如果索引列是varchar2类型。<br> 高效的写法：<br> SELECT * FROM A_TABLE A WHERE A.COL = ‘123’;<br> 低效的写法：<br> SELECT * FROM A_TABLE A WHERE A.COL = 123;</li>
+<li>多个平等的索引<br> 当 SQL 语句的执行路径可以使用分布在多个表上的多个索引时，ORACLE 会同时使用多个索引并在运行时对它们的记录进行合并，检索出仅对全部索引有效的记录。<br> 在 ORACLE 选择执行路径时，唯一性索引的等级高与非唯一性索引，然而这个规则只有当 where 字句中索引列和常量比较才有效。如果索引列和其他表的索引列相比较，这种字句在优化器中的等级是非常低的。<br> 如果不同表中两个相同等级的索引将被引用，FROM 字句中表的顺序将决定哪个会被率使用，FROM 字句中最后的表的索引将有最高的优先级。<br> 如果同一表中有两个相同等级的索引被引用，oracle 会分析最有效的索引去引用，其他的索引不会使用，如果这些相同等级的索引效果差不多，oracle 可能会自动合并进行使用。</li>
+<li>不明确的索引等级（E）<br> 当 oracle 无法判断索引的等级高低差别，优化器将只使用一个索引，它就是在 WHERE 字句中被列在在前面的。</li>
+<li>自动选择索引<br> 如果表中有两个以上（包括两个）索引，其中有一个唯一性索引，而其他事非唯一性，在这种情况下，oracle 将使用唯一性索引而完全忽略非唯一性索引。</li>
+<li>使用提示（Hints）（完全不懂）<br>对于表的访问，可以使用两种Hints.FULL 和 ROWID<br>FULL hint 告诉ORACLE 使用全表扫描的方式访问指定表。<br>例如：<br>SELECT /* + FULL(A_TABLE)*/*<br>FROM T_TABLE<br>WHERE KEY = ‘ABC’;<br>如果一个大表没有被设定为缓存（CACHED)表而你希望他的数据在查询结束时任然停留在 SGA 中，你就可以使用 CACHE hint 来告诉优化器把数据保留在 SGA 中，通常 CACHE hint 和 FULL hint 一起使用。<br>例如：<br>SELECT /* + FULL(A_TABLE) CACHE(A_TABLE)*/* FROM A_TABLE;<br>ROWID hint 告诉 ORACLE 使用 TABLE ACCESS BY ROWID 的操作访问表。<br>采用 TABLE ACCESS BY ROWID 的方式特别是当访问大表时候，使用这种方式，你需要知道 ROWID 的值或者使用索引。<br>索引 hint 告诉ORACLE 使用基于索引的扫描方式，你不必说明具体的索引名称。<br>例如：<br>SELECT /*+INDEX(IDX_KEY)*/ KEY2<br>FROM T_TABLE<br>WHERE KEY = ‘ABC’;<br>在不使用 hint 的情况下，以上的查询应该也会使用索引，然而，如果该索引的重复值过多而你的优化器是 CBO，优化器就可能忽略索引，在这种情况下，你可以使用 INDEX hint 强制 ORACLE 使用该索引。<br>ORACLE hints 还包括 ALL_ROWS,FIRST_ROWS,RULE,USE_NL,USE_MERGE,USE_HASH 等等。<br>使用 hint，表示我们对 ORACLE 优化器缺省的执行路径不满意，需要手工修改。这是一个很有技巧性的工作。除非特定的情况，例如：数据转换，其他情况最好不用。</li>
+<li>表上存在过旧的分析（不懂）<br>我们现在很多项目都存在性能问题，其中有很多种情况都是由于分析过旧导致 ORACLE 判断索引级别和资源成本上出现问题，会使用 ORACLE 判断错误不使用索引。我个人觉得这是 ORACLE 不够完善的地方。<br>解决办法：<br>第一种办法：删除分析，停止 oracle 10g 的自动分析，但不是用分析，oracle 访问数据库的 CPU 消耗就过大。<br>第二种办法：重新分析，但过长时间后，索引时候会再次失效，没有验证过。</li>
+<li>表上存在并行（不懂）<br>表上存在并行，ORACLE 判断索引级别和资源成本上出现问题，会导致 ORACLE 判断错误不使用索引。（考虑删除并行）</li>
+<li>关于建立索引<br>索引的使用时肯定会大大提高查询的速度，但索引其实也是一种数据，它也是存放在用户的表空间下的，索引建立的越多越大，占用的空间也越大，从用户的环境来说这也不是问题，但如果一个表有过多过大的查询，必然会影响 insert、delete 和 update 索引列的速度，因为这些操作改变了整个表的索引顺序，oracle 需要进行调整，这样性能就下降了。因此我们一定要合理的建立好有效的索引，编程也要符合索引的规则，而不能是索引符合编程的规则。<br>案例：<br>某项目数据转换，采用游标循环 insert 的方式，总共2000万的数据，总共用了4个小时，原因就是目标表里面有很多索引。解决方法是先删除索引再执行转换脚本，结果不用1小时就完成了，建立全部的索引不到半个小时。<br>原因就是第一种方式每次 insert 都改变索引顺序，共执行改变 2000 万次，而第第二种方式整体上执行索引顺序就一次。</li>
+<li>当有多个索引可供选择是，使用的是 DB 设计者所希望的索引<br>说明：<br>使用能最大限度（效率高）地提取到数据的索引。一般来说，能够抽取原始数据的 1/50 以内的索引，才是效率高的。如果不具备这样的条件的话，或许全表扫描也许会很快。</li>
+</ol>
+<h3 id="存储函数"><a href="#存储函数" class="headerlink" title="存储函数"></a>存储函数</h3><ol>
+<li>对于经常使用的 SQL 语句（循环处理中使用的 SQL 等），可以通过预编译、绑定变量来提高性能<br> 说明：<br> 由于 SQL 可以被再利用，是有意可缩短 SQL 解析时间。</li>
+</ol>
+<h3 id="分组和排序的使用"><a href="#分组和排序的使用" class="headerlink" title="分组和排序的使用"></a>分组和排序的使用</h3><ol>
+<li>去掉没有意义的 GROUP BY、ORDER BY 子句<br> 说明：<br> 对于数据库来说 ORDER BY、GROUP BY 执行起来最好费资源的处理。</li>
+<li>GROUP BY 优化<br> 说明：<br> GROUP BY 需要查询后排序，速度慢影响性能，如果查询数据量大，并且分组复杂，这样的查询语句在性能上是有问题的。尽量避免使用分组或者采用上面可用的办法去代替。采用 ORDER BY 的也一定要进行优化。</li>
+<li>尽量避免使用 ORDER BY<br> 说明：<br> ORDER BY 需要查询后排序，速度慢影响性能，如果查询数据量大，排序的时间就很长。但我们也不能避免不是用，这样大家一定注意一点的是如果使用 ORDER BY 那么排序的列表必须符合索引，这样在速度上会得到很大的提升。</li>
+</ol>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><ol>
+<li>减少对表的查询<br> 减少对磁盘的访问</li>
+<li>避免循环（游标）里面嵌查询<br> 游标里面不能嵌入查询（或者再嵌游标），其实也不能有 update、delete 等语句，只能有 insert 语句。但在实际的编程情况下是不可能完全避免的，但我们一定要尽量避免。该类问题也是我们程序中出现过的问题，该类问题也可以大大提升程序效率，请大家一定注意。<br> 参考：<br> 优化的方法是尽量把游标循环中的查询语句放到游标查询中一起查询出来，这样相当于只访问了1次磁盘督导内存，如果放到游标中的话，加入游标有 100 万数据量，那么程序需要100 万次磁盘，可以想象浪费了多少 IO 的访问。<br> 如果在程序编写上没有办法避免游标中有查询语句的话（一般情况是可以避免的），那么也要保证游标中的查询使用的索引（即查询速度非常快），例如：游标100万数据量，游标中的查询语句执行需要0.02秒，从这个速度上来说是很快的，但总体上看100万*0.02s = 2万秒 = 5小时33分钟，如果写一个不够优化的语句需要1s，那么需要几天执行完呢？</li>
+<li>尽量用 union all 替换 union<br> 说明：<br> union 会去掉重复的记录，会有排序动作，会浪费时间。因此在没有重复记录的情况下可以活可以允许有重复记录的话，要尽量采用 union all 来关联。</li>
+<li>使用 DECODE 函数来减少处理时间<br> 使用DECODE 函数可以避免重复扫描相同记录或重复连接相同的表。<br> 举例：<br> 高效的写法：<br> SELECT COUNT(DECODE(CHECKED,1，1，NULL)) A,<br> COUNT(DECODE(CHECKED,0，1，NULL)) B<br> FROM PRODUCT<br> WHERE KEY = ‘ABC’;<br> 低效的写法：<br> SELECT COUNT(1),CHECKED<br> FROM PRODUCT<br> WHERE KEY = ‘ABC’<br> AND CHECKED IN (1，2)<br> GROUP BY CHECKED;<br> 特别说明：<strong>GROUP BY 和 ORDER BY 都会影响性能，编程时尽量避免没有必要的分组和排序，或者通过其他的有效的编程办法去替换，比如上面的处理办法。</strong></li>
+<li>避免全表扫描的查询方式<br> 说明：<br> 如果样本很少的话（一个 DISK I/O 就可以取得那种程度），应该没有问题的，但是一般来说要严禁整表扫描的。<br> 参考：<br> 可用连接实现的场合，就尽量避免使用子查询。</li>
+<li>删除重复记录<br> 说明：<br> 一般数据转换的程序经常会使用到该方法。<br> 最高效的删除重复记录方法（因为使用了 ROWID)。<br> 举例：<br> DELETE FROM USER A<br> WHERE A.ROWID &gt; (SELECT MIN(B.ROWID)<br> FROM USER B<br> WHERE A.COL = B.COL);</li>
+<li>COMMIT 使用<br> 说明：<br> 数据转换的程序需要关注这一点。COMMIT 执行也是有时间的，不过时间特别短，但提交频率特别大，必然会浪费时间。COMMIT 可以释放资源，在大量数据更新时，必须及时提交。<br> a.回滚段上由于恢复数据的信息<br> b.被程序语句获得的锁<br> c.redo log buffer 中的空间<br> d.ORACLE 为管理上述3种资源中的内部花费。<br> 举例：<br> CUR 有5000万数据<br> n := 0;<br> FOR RES IN CUR LOOP<br> INSERT INTO …;<br> n := n + 1;<br> IF N == 100000 THEN – 10万一提交<br> COMMIT;<br> n := 0;<br> END IF;<br> END LOOP;<br> COMMIT;<br> 参考：<br> 如果1条已提交，需要提交5000万次，必然浪费时间，如果整体提交，资源不能释放，性能必定下降。在实际编程时，应注意提交次数和提交数据量的平衡关系。</li>
+<li>批量数据插入<br> 数据转换时或者大业务数据插入时，有以下几种办法进行数据插入（不包括imp、impdp、sqlloader）<ul>
+<li>INSERT INTO … SELECT 方式<br>  将查询的结果一次插入到目标表中，由于是一次查询一次插入，并且最后一次提交，他的速度要比下面的 cursor 的方式速度要快。但查询插入的数据量过大必然会占用更多的内存和 undo 表空间，只能在插入完成后提交，这样资源不能释放，会导致回滚表空间不足和快照过旧的问题，另外一旦失败需要全部回滚。因此建议小数据量（例如：300万以下）的导入采用该种方式。</li>
+<li>INSERT /*+APPEND*/ INTO … SELECT 方式<br>  该种方式同上种方式，不过由于有 append 的提示，这种语句不走回滚段直接插入数据文件，速度非常快。注意系统开发编程不是使用该种方式，数据转换可以灵活使用。</li>
+<li>CURSOR 方式</li>
+</ul>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/02/PLSQL 程序性能分析及优化/" data-id="cjd5d57g90000lofw81wmn2xn" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/02/PLSQL 程序性能分析及优化/" data-id="cjdbofibx0000m0fw4fxv2t73" class="article-share-link">分享</a>
       
       
       
@@ -165,7 +239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/动态代理/" data-id="cjd49waj000040sfwpzhssniy" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/动态代理/" data-id="cjdbofic60004m0fw747i3aiv" class="article-share-link">分享</a>
       
       
       
@@ -213,7 +287,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjd49waiv00010sfwjewqkd1l" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjdbofic20001m0fw6ric4ngm" class="article-share-link">分享</a>
       
       
       
@@ -282,7 +356,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/获取aop代理对象的三种方式/" data-id="cjd49waj400060sfwpfzedusr" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/获取aop代理对象的三种方式/" data-id="cjdbofic80006m0fw1euv2vkz" class="article-share-link">分享</a>
       
       
       
@@ -328,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjd49waix00020sfwba1utu19" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjdbofic50003m0fwke5n81kc" class="article-share-link">分享</a>
       
       
       
@@ -378,7 +452,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/comparators/" data-id="cjd49waiq00000sfwse2hyyqk" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/comparators/" data-id="cjdbofica0007m0fwlqxk9dqb" class="article-share-link">分享</a>
       
       
       
@@ -427,7 +501,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/gitlab配置/" data-id="cjd49waiy00030sfwfemvb0wt" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/gitlab配置/" data-id="cjdbofic40002m0fwem88kl1e" class="article-share-link">分享</a>
       
       
       
@@ -476,7 +550,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cjd49waj200050sfw47b1fija" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cjdbofic70005m0fwyo24wbte" class="article-share-link">分享</a>
       
       
       
