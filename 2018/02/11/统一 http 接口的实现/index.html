@@ -3,18 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>String | yitaqi</title>
+  <title>统一 http 接口的实现 | yitaqi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="StringBuilder &amp;amp; StringBuffer String ：  String a = “abc”;  String b = “1”;  String c = a + b; //三个对象  String d = “abc” + “1”; //一个对象 StringBuffer : 线程安全的； StringBuilder : 线程不安全的； 三者执行速度：String &amp;lt;">
+  <meta name="description" content="由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。 原始的MVC 模式 实现统一接口具体实现： 需要注意的问题get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。可以通过转义的方式暂时解决，{：%7B，}：%7D。如：localhost:8080/ser?method=123&amp;amp;params={}">
 <meta property="og:type" content="article">
-<meta property="og:title" content="String">
-<meta property="og:url" content="http://yitaqi.top/2018/02/01/String/index.html">
+<meta property="og:title" content="统一 http 接口的实现">
+<meta property="og:url" content="http://yitaqi.top/2018/02/11/统一 http 接口的实现/index.html">
 <meta property="og:site_name" content="yitaqi">
-<meta property="og:description" content="StringBuilder &amp;amp; StringBuffer String ：  String a = “abc”;  String b = “1”;  String c = a + b; //三个对象  String d = “abc” + “1”; //一个对象 StringBuffer : 线程安全的； StringBuilder : 线程不安全的； 三者执行速度：String &amp;lt;">
-<meta property="og:updated_time" content="2018-02-01T07:05:11.267Z">
+<meta property="og:description" content="由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。 原始的MVC 模式 实现统一接口具体实现： 需要注意的问题get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。可以通过转义的方式暂时解决，{：%7B，}：%7D。如：localhost:8080/ser?method=123&amp;amp;params={}">
+<meta property="og:image" content="http://yitaqi.top/image/MVC.png">
+<meta property="og:image" content="http://yitaqi.top/image/MVC2.png">
+<meta property="og:image" content="http://yitaqi.top/image/MVC3.png">
+<meta property="og:updated_time" content="2018-02-11T08:38:47.801Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="String">
-<meta name="twitter:description" content="StringBuilder &amp;amp; StringBuffer String ：  String a = “abc”;  String b = “1”;  String c = a + b; //三个对象  String d = “abc” + “1”; //一个对象 StringBuffer : 线程安全的； StringBuilder : 线程不安全的； 三者执行速度：String &amp;lt;">
+<meta name="twitter:title" content="统一 http 接口的实现">
+<meta name="twitter:description" content="由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。 原始的MVC 模式 实现统一接口具体实现： 需要注意的问题get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。可以通过转义的方式暂时解决，{：%7B，}：%7D。如：localhost:8080/ser?method=123&amp;amp;params={}">
+<meta name="twitter:image" content="http://yitaqi.top/image/MVC.png">
   
     <link rel="alternate" href="/atom.xml" title="yitaqi" type="application/atom+xml">
   
@@ -67,10 +71,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-String" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-统一 http 接口的实现" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/02/01/String/" class="article-date">
-  <time datetime="2018-02-01T02:47:21.375Z" itemprop="datePublished">2018-02-01</time>
+    <a href="/2018/02/11/统一 http 接口的实现/" class="article-date">
+  <time datetime="2018-02-11T08:08:45.802Z" itemprop="datePublished">2018-02-11</time>
 </a>
     
   </div>
@@ -81,7 +85,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      String
+      统一 http 接口的实现
     </h1>
   
 
@@ -91,19 +95,15 @@
       
         <!-- Table of Contents -->
         
-        <h2 id="StringBuilder-amp-StringBuffer"><a href="#StringBuilder-amp-StringBuffer" class="headerlink" title="StringBuilder &amp; StringBuffer"></a>StringBuilder &amp; StringBuffer</h2><ul>
-<li>String ：<br>  String a = “abc”;<br>  String b = “1”;<br>  String c = a + b; //三个对象<br>  String d = “abc” + “1”; //一个对象</li>
-<li>StringBuffer : 线程安全的；</li>
-<li>StringBuilder : 线程不安全的；<blockquote>
-<p>三者执行速度：String &lt; StringBuffer &lt; StringBuilder</p>
-</blockquote>
-</li>
-</ul>
+        <p>由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。</p>
+<h2 id="原始的MVC-模式"><a href="#原始的MVC-模式" class="headerlink" title="原始的MVC 模式"></a>原始的MVC 模式</h2><p><img src="/image/MVC.png" alt=""></p>
+<h2 id="实现统一接口"><a href="#实现统一接口" class="headerlink" title="实现统一接口"></a>实现统一接口</h2><p><img src="/image/MVC2.png" alt=""><br>具体实现：<br><img src="/image/MVC3.png" alt=""></p>
+<h2 id="需要注意的问题"><a href="#需要注意的问题" class="headerlink" title="需要注意的问题"></a>需要注意的问题</h2><p>get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。<br>可以通过转义的方式暂时解决，{：%7B，}：%7D。<br>如：<br>localhost:8080/ser?method=123&amp;params={}<br>localhost:8080/ser?method=123&amp;params=%7B%7D</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjdijkmsu00005cfwyepvuedn" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/11/统一 http 接口的实现/" data-id="cjdijkmt900095cfwcyha2ksq" class="article-share-link">分享</a>
       
       
       
@@ -155,19 +155,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/02/01/动态代理/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          动态代理
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/02/01/获取aop代理对象的三种方式/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/02/11/spring boot 使用servlet/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">如何获取 AOP 代理对象</div>
+      <div class="article-nav-title">spring boot 使用servlet</div>
     </a>
   
 </nav>
@@ -201,7 +192,7 @@
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#StringBuilder-amp-StringBuffer"><span class="toc-number">1.</span> <span class="toc-text">StringBuilder &amp; StringBuffer</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#原始的MVC-模式"><span class="toc-number">1.</span> <span class="toc-text">原始的MVC 模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现统一接口"><span class="toc-number">2.</span> <span class="toc-text">实现统一接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需要注意的问题"><span class="toc-number">3.</span> <span class="toc-text">需要注意的问题</span></a></li></ol>
           </div>
       </div>
     </div>

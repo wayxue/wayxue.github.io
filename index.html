@@ -65,6 +65,91 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-统一 http 接口的实现" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/11/统一 http 接口的实现/" class="article-date">
+  <time datetime="2018-02-11T08:08:45.802Z" itemprop="datePublished">2018-02-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/11/统一 http 接口的实现/">统一 http 接口的实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。</p>
+<h2 id="原始的MVC-模式"><a href="#原始的MVC-模式" class="headerlink" title="原始的MVC 模式"></a>原始的MVC 模式</h2><p><img src="/image/MVC.png" alt=""></p>
+<h2 id="实现统一接口"><a href="#实现统一接口" class="headerlink" title="实现统一接口"></a>实现统一接口</h2><p><img src="/image/MVC2.png" alt=""><br>具体实现：<br><img src="/image/MVC3.png" alt=""></p>
+<h2 id="需要注意的问题"><a href="#需要注意的问题" class="headerlink" title="需要注意的问题"></a>需要注意的问题</h2><p>get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。<br>可以通过转义的方式暂时解决，{：%7B，}：%7D。<br>如：<br>localhost:8080/ser?method=123&amp;params={}<br>localhost:8080/ser?method=123&amp;params=%7B%7D</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2018/02/11/统一 http 接口的实现/" data-id="cjdijkmt900095cfwcyha2ksq" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-spring boot 使用servlet" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/11/spring boot 使用servlet/" class="article-date">
+  <time datetime="2018-02-11T07:48:49.519Z" itemprop="datePublished">2018-02-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/11/spring boot 使用servlet/">spring boot 使用servlet</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h2 id="在servlet-上加入注解-WebServlet-urlPatterns-“-ser”"><a href="#在servlet-上加入注解-WebServlet-urlPatterns-“-ser”" class="headerlink" title="在servlet 上加入注解@WebServlet(urlPatterns = “/ser”)"></a>在servlet 上加入注解@WebServlet(urlPatterns = “/ser”)</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet</span>(urlPatterns = <span class="string">"/ser"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApiServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    ApiGateHandler handler;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());</span><br><span class="line">        handler = (ApiGateHandler) context.getBean(ApiGateHandler.class);</span><br><span class="line">        System.out.println(<span class="string">"i am a servlet named wubai"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        handler.handle(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        doGet(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在入口配置类上添加注解-ServletComponentScan-basePackages-“com-yitaqi-servlet”"><a href="#在入口配置类上添加注解-ServletComponentScan-basePackages-“com-yitaqi-servlet”" class="headerlink" title="在入口配置类上添加注解@ServletComponentScan(basePackages = “com.yitaqi.servlet”)"></a>在入口配置类上添加注解@ServletComponentScan(basePackages = “com.yitaqi.servlet”)</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@ServletComponentScan</span>(basePackages = <span class="string">"com.yitaqi.servlet"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GateApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 调用servlet</span></span><br><span class="line"></span><br><span class="line">		SpringApplication.run(GateApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2018/02/11/spring boot 使用servlet/" data-id="cjdijkmt500055cfw5hc2emjp" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
     <article id="post-PLSQL 程序性能分析及优化" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/02/02/PLSQL 程序性能分析及优化/" class="article-date">
@@ -175,7 +260,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/02/PLSQL 程序性能分析及优化/" data-id="cjdbofibx0000m0fw4fxv2t73" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/02/PLSQL 程序性能分析及优化/" data-id="cjdijkmt300035cfwf9zde8th" class="article-share-link">分享</a>
       
       
       
@@ -239,7 +324,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/动态代理/" data-id="cjdbofic60004m0fw747i3aiv" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/动态代理/" data-id="cjdijkmt800085cfwpfz00o0r" class="article-share-link">分享</a>
       
       
       
@@ -287,7 +372,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjdbofic20001m0fw6ric4ngm" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjdijkmsu00005cfwyepvuedn" class="article-share-link">分享</a>
       
       
       
@@ -356,7 +441,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/获取aop代理对象的三种方式/" data-id="cjdbofic80006m0fw1euv2vkz" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/获取aop代理对象的三种方式/" data-id="cjdijkmt700075cfw9onhm117" class="article-share-link">分享</a>
       
       
       
@@ -402,7 +487,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjdbofic50003m0fwke5n81kc" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjdijkmt200025cfw44i5n358" class="article-share-link">分享</a>
       
       
       
@@ -452,7 +537,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/comparators/" data-id="cjdbofica0007m0fwlqxk9dqb" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/comparators/" data-id="cjdijkmsz00015cfwb2nt1edv" class="article-share-link">分享</a>
       
       
       
@@ -501,7 +586,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/gitlab配置/" data-id="cjdbofic40002m0fwem88kl1e" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/gitlab配置/" data-id="cjdijkmt600065cfw5mtabzzq" class="article-share-link">分享</a>
       
       
       
@@ -550,7 +635,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cjdbofic70005m0fwyo24wbte" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cjdijkmt400045cfwr97cq4cq" class="article-share-link">分享</a>
       
       
       
@@ -604,6 +689,14 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       <ul>
         
           <li>
+            <a href="/2018/02/11/统一 http 接口的实现/">统一 http 接口的实现</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/11/spring boot 使用servlet/">spring boot 使用servlet</a>
+          </li>
+        
+          <li>
             <a href="/2018/02/02/PLSQL 程序性能分析及优化/">PLSQL 优化</a>
           </li>
         
@@ -615,14 +708,6 @@ IdentityFile ~/.ssh/gitlab_id_rsa
             <a href="/2018/02/01/String/">String</a>
           </li>
         
-          <li>
-            <a href="/2018/02/01/获取aop代理对象的三种方式/">如何获取 AOP 代理对象</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/01/excellent/">登高 杜甫</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -632,7 +717,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   <div class="widget-wrap">
     <h3 class="widget-title archive">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">8</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">10</span></li></ul>
     </div>
   </div>
 
@@ -640,7 +725,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   
     
 <div class="widget-wrap">
-    <h3 class="widget-title">Links</h3>
+    <h3 class="widget-title">友情链接</h3>
     <div class="widget">
         <ul>
             
@@ -660,7 +745,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
     <!--微信公众号二维码-->
 
   <div class="widget-wrap">
-    <h3 class="follow-title ">WeChat</h3>
+    <h3 class="follow-title ">微信公众号</h3>
     <div class="widget wechat-widget">
         <img src="http://blog.giscafer.com/static/images/qrcode_giscafer.jpg" alt="扫码关注" width="250"/>
     </div>
