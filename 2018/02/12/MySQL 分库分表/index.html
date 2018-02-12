@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>登高 杜甫 | yitaqi</title>
+  <title>MySQL 分库分表 | yitaqi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="风急天高猿啸哀，渚清沙白鸟飞回。                              无边落木萧萧下，不尽长江滚滚来。 万里悲秋常作客，百年多病独登台。 艰难苦恨繁霜鬓，潦倒新停浊酒杯。">
+  <meta name="description" content="MySQL 官方读写分离方案 分库分表 类型1.1 垂直把一个属性比较多、行的数据比较大的库（表）的属性拆分成不同表，用这种方式来降低单库（表）大小达到提高性能的目的。特点：a.每个库（表）的结构都不一样b.每个库（表）的数据都至少有一列一样c.每个库（表）的并集是全量数据1.2 水平以某个字段按照一定的规律（取模）将一个表的数据分到多个库（表）中特点：a.每个库（表）的结构都一样b.每个库（表）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="登高 杜甫">
-<meta property="og:url" content="http://yitaqi.top/2018/02/01/excellent/index.html">
+<meta property="og:title" content="MySQL 分库分表">
+<meta property="og:url" content="http://yitaqi.top/2018/02/12/MySQL 分库分表/index.html">
 <meta property="og:site_name" content="yitaqi">
-<meta property="og:description" content="风急天高猿啸哀，渚清沙白鸟飞回。                              无边落木萧萧下，不尽长江滚滚来。 万里悲秋常作客，百年多病独登台。 艰难苦恨繁霜鬓，潦倒新停浊酒杯。">
-<meta property="og:updated_time" content="2018-02-01T06:17:26.470Z">
+<meta property="og:description" content="MySQL 官方读写分离方案 分库分表 类型1.1 垂直把一个属性比较多、行的数据比较大的库（表）的属性拆分成不同表，用这种方式来降低单库（表）大小达到提高性能的目的。特点：a.每个库（表）的结构都不一样b.每个库（表）的数据都至少有一列一样c.每个库（表）的并集是全量数据1.2 水平以某个字段按照一定的规律（取模）将一个表的数据分到多个库（表）中特点：a.每个库（表）的结构都一样b.每个库（表）">
+<meta property="og:image" content="http://yitaqi.top/image/MySQL-proxy.png">
+<meta property="og:updated_time" content="2018-02-12T02:59:00.488Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="登高 杜甫">
-<meta name="twitter:description" content="风急天高猿啸哀，渚清沙白鸟飞回。                              无边落木萧萧下，不尽长江滚滚来。 万里悲秋常作客，百年多病独登台。 艰难苦恨繁霜鬓，潦倒新停浊酒杯。">
+<meta name="twitter:title" content="MySQL 分库分表">
+<meta name="twitter:description" content="MySQL 官方读写分离方案 分库分表 类型1.1 垂直把一个属性比较多、行的数据比较大的库（表）的属性拆分成不同表，用这种方式来降低单库（表）大小达到提高性能的目的。特点：a.每个库（表）的结构都不一样b.每个库（表）的数据都至少有一列一样c.每个库（表）的并集是全量数据1.2 水平以某个字段按照一定的规律（取模）将一个表的数据分到多个库（表）中特点：a.每个库（表）的结构都一样b.每个库（表）">
+<meta name="twitter:image" content="http://yitaqi.top/image/MySQL-proxy.png">
   
     <link rel="alternate" href="/atom.xml" title="yitaqi" type="application/atom+xml">
   
@@ -67,10 +69,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-excellent" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-MySQL 分库分表" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/02/01/excellent/" class="article-date">
-  <time datetime="2018-02-01T02:47:11.093Z" itemprop="datePublished">2018-02-01</time>
+    <a href="/2018/02/12/MySQL 分库分表/" class="article-date">
+  <time datetime="2018-02-12T02:00:52.986Z" itemprop="datePublished">2018-02-12</time>
 </a>
     
   </div>
@@ -81,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      登高 杜甫
+      MySQL 分库分表
     </h1>
   
 
@@ -91,17 +93,26 @@
       
         <!-- Table of Contents -->
         
-        <blockquote>
-<p>风急天高猿啸哀，渚清沙白鸟飞回。                             </p>
-<p>无边落木萧萧下，不尽长江滚滚来。</p>
-<p>万里悲秋常作客，百年多病独登台。</p>
-<p>艰难苦恨繁霜鬓，潦倒新停浊酒杯。</p>
-</blockquote>
+        <h2 id="MySQL-官方读写分离方案"><a href="#MySQL-官方读写分离方案" class="headerlink" title="MySQL 官方读写分离方案"></a>MySQL 官方读写分离方案</h2><p><img src="/image/MySQL-proxy.png" alt=""></p>
+<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><ol>
+<li>类型<br>1.1 垂直<br>把一个属性比较多、行的数据比较大的库（表）的属性拆分成不同表，用这种方式来降低单库（表）大小达到提高性能的目的。<br>特点：<br>a.每个库（表）的结构都不一样<br>b.每个库（表）的数据都至少有一列一样<br>c.每个库（表）的并集是全量数据<br>1.2 水平<br>以某个字段按照一定的规律（取模）将一个表的数据分到多个库（表）中<br>特点：<br>a.每个库（表）的结构都一样<br>b.每个库（表）的数据都不一样<br>c.每个库（表）的并集是全量数据</li>
+<li>分库策略<br>2.1 Hash 取模（通过表的一列字段进行 hash code % 1024）<br>2.2 Range 范围分区<br>2.3 List 预定义</li>
+</ol>
+<h2 id="分库分表需要注意的问题"><a href="#分库分表需要注意的问题" class="headerlink" title="分库分表需要注意的问题"></a>分库分表需要注意的问题</h2><ol>
+<li>多数据源管理（proxy）</li>
+<li>跨事物处理（避免）</li>
+<li>查询数据的结构集合并（改写）</li>
+<li>分布式全局唯一id</li>
+</ol>
+<h2 id="水平拆分"><a href="#水平拆分" class="headerlink" title="水平拆分"></a>水平拆分</h2><ol>
+<li>路由算法<br>假设有四个数据库，将四个数据库分别定义为四分区间：<br>a.0-255 b.256-511 c.512-767 d.768-1023<br>将表中一个字段的hash值模于1024,根据计算出的结果找出数据库定义的区间。（333 属于 b）</li>
+<li>一致性Hash<br>a.一个库需要拆分为两个时，拆分后的库所对应的的hash区间之和要与拆分之前一致。<br>b.两个库合并为一个库时，合并后的库所对应的的hash区间要与合并之前两个库的hash区间之和一致</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjdjkn7590002tsfwilw8zjmb" class="article-share-link">Share</a>
+      <a data-url="http://yitaqi.top/2018/02/12/MySQL 分库分表/" data-id="cjdjv9hn00000ogfwa5yp1934" class="article-share-link">Share</a>
       
       
       
@@ -153,19 +164,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/02/01/获取aop代理对象的三种方式/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          如何获取 AOP 代理对象
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/02/01/comparators/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/02/11/统一 http 接口的实现/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">comparators</div>
+      <div class="article-nav-title">统一 http 接口的实现</div>
     </a>
   
 </nav>
@@ -193,42 +195,24 @@
 
   
     
-  
+    <div class="widget-wrap">
     
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/02/12/MySQL 分库分表/">MySQL 分库分表</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/11/统一 http 接口的实现/">统一 http 接口的实现</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/11/spring boot 使用servlet/">spring boot 使用servlet</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/02/PLSQL 程序性能分析及优化/">PLSQL 优化</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/01/动态代理/">动态代理</a>
-          </li>
-        
-      </ul>
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">Content</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL-官方读写分离方案"><span class="toc-number">1.</span> <span class="toc-text">MySQL 官方读写分离方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分库分表"><span class="toc-number">2.</span> <span class="toc-text">分库分表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分库分表需要注意的问题"><span class="toc-number">3.</span> <span class="toc-text">分库分表需要注意的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#水平拆分"><span class="toc-number">4.</span> <span class="toc-text">水平拆分</span></a></li></ol>
+          </div>
+      </div>
     </div>
-  </div>
 
+  
+    
+
+  
+    
+  
+    
   
     
 

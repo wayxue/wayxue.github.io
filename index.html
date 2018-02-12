@@ -37,7 +37,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
@@ -64,6 +64,61 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-MySQL 分库分表" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/12/MySQL 分库分表/" class="article-date">
+  <time datetime="2018-02-12T02:00:52.986Z" itemprop="datePublished">2018-02-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/12/MySQL 分库分表/">MySQL 分库分表</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h2 id="MySQL-官方读写分离方案"><a href="#MySQL-官方读写分离方案" class="headerlink" title="MySQL 官方读写分离方案"></a>MySQL 官方读写分离方案</h2><p><img src="/image/MySQL-proxy.png" alt=""></p>
+<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><ol>
+<li>类型<br>1.1 垂直<br>把一个属性比较多、行的数据比较大的库（表）的属性拆分成不同表，用这种方式来降低单库（表）大小达到提高性能的目的。<br>特点：<br>a.每个库（表）的结构都不一样<br>b.每个库（表）的数据都至少有一列一样<br>c.每个库（表）的并集是全量数据<br>1.2 水平<br>以某个字段按照一定的规律（取模）将一个表的数据分到多个库（表）中<br>特点：<br>a.每个库（表）的结构都一样<br>b.每个库（表）的数据都不一样<br>c.每个库（表）的并集是全量数据</li>
+<li>分库策略<br>2.1 Hash 取模（通过表的一列字段进行 hash code % 1024）<br>2.2 Range 范围分区<br>2.3 List 预定义</li>
+</ol>
+<h2 id="分库分表需要注意的问题"><a href="#分库分表需要注意的问题" class="headerlink" title="分库分表需要注意的问题"></a>分库分表需要注意的问题</h2><ol>
+<li>多数据源管理（proxy）</li>
+<li>跨事物处理（避免）</li>
+<li>查询数据的结构集合并（改写）</li>
+<li>分布式全局唯一id</li>
+</ol>
+<h2 id="水平拆分"><a href="#水平拆分" class="headerlink" title="水平拆分"></a>水平拆分</h2><ol>
+<li>路由算法<br>假设有四个数据库，将四个数据库分别定义为四分区间：<br>a.0-255 b.256-511 c.512-767 d.768-1023<br>将表中一个字段的hash值模于1024,根据计算出的结果找出数据库定义的区间。（333 属于 b）</li>
+<li>一致性Hash<br>a.一个库需要拆分为两个时，拆分后的库所对应的的hash区间之和要与拆分之前一致。<br>b.两个库合并为一个库时，合并后的库所对应的的hash区间要与合并之前两个库的hash区间之和一致</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2018/02/12/MySQL 分库分表/" data-id="cjdjv9hn00000ogfwa5yp1934" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
   
     <article id="post-统一 http 接口的实现" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -98,7 +153,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/11/统一 http 接口的实现/" data-id="cjdik1t7n000840fwpyiaqj4l" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/11/统一 http 接口的实现/" data-id="cjdjkn75e0007tsfwopk4tj7z" class="article-share-link">Share</a>
       
       
       
@@ -139,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/11/spring boot 使用servlet/" data-id="cjdik1t7l000740fwid8a1ee4" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/11/spring boot 使用servlet/" data-id="cjdjkn75d0006tsfwr70xiwgt" class="article-share-link">Share</a>
       
       
       
@@ -261,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/02/PLSQL 程序性能分析及优化/" data-id="cjdik1t6w000140fw8722q7ni" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/02/PLSQL 程序性能分析及优化/" data-id="cjdjkn75b0004tsfw1ea20ppb" class="article-share-link">Share</a>
       
       
       
@@ -325,7 +380,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/动态代理/" data-id="cjdik1t7j000640fw5kkhydvp" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/动态代理/" data-id="cjdjkn75a0003tsfwbztpp3i4" class="article-share-link">Share</a>
       
       
       
@@ -373,7 +428,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjdik1t6r000040fwo7h2ju7l" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjdjkn7520000tsfwfbo41fgb" class="article-share-link">Share</a>
       
       
       
@@ -442,7 +497,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/获取aop代理对象的三种方式/" data-id="cjdik1t7o000940fwo024f4x2" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/获取aop代理对象的三种方式/" data-id="cjdjkn75c0005tsfwerds8fbm" class="article-share-link">Share</a>
       
       
       
@@ -488,7 +543,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjdik1t7e000340fws5t5qnjm" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjdjkn7590002tsfwilw8zjmb" class="article-share-link">Share</a>
       
       
       
@@ -538,7 +593,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/comparators/" data-id="cjdik1t7c000240fwjiv70jth" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/comparators/" data-id="cjdjkn75f0008tsfwe3dqduxh" class="article-share-link">Share</a>
       
       
       
@@ -587,56 +642,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/gitlab配置/" data-id="cjdik1t7f000440fw276rbh7c" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
- 
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/01/hello-world/" class="article-date">
-  <time datetime="2018-02-01T01:05:40.794Z" itemprop="datePublished">2018-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/01/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- Table of Contents -->
-        
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cjdik1t7h000540fwwqmfpzvw" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/gitlab配置/" data-id="cjdjkn7570001tsfwyv4xtmud" class="article-share-link">Share</a>
       
       
       
@@ -649,6 +655,10 @@ IdentityFile ~/.ssh/gitlab_id_rsa
 
   
 
+
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next&raquo;</a>
+  </nav>
 </section>
            
     <aside id="sidebar">
@@ -685,9 +695,13 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">最新文章</h3>
+    <h3 class="widget-title recent-posts">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/02/12/MySQL 分库分表/">MySQL 分库分表</a>
+          </li>
         
           <li>
             <a href="/2018/02/11/统一 http 接口的实现/">统一 http 接口的实现</a>
@@ -705,10 +719,6 @@ IdentityFile ~/.ssh/gitlab_id_rsa
             <a href="/2018/02/01/动态代理/">动态代理</a>
           </li>
         
-          <li>
-            <a href="/2018/02/01/String/">String</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -716,9 +726,9 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title archive">归档</h3>
+    <h3 class="widget-title archive">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -726,7 +736,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   
     
 <div class="widget-wrap">
-    <h3 class="widget-title">友情链接</h3>
+    <h3 class="widget-title">Links</h3>
     <div class="widget">
         <ul>
             
@@ -746,7 +756,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
     <!--微信公众号二维码-->
 
   <div class="widget-wrap">
-    <h3 class="follow-title ">微信公众号</h3>
+    <h3 class="follow-title ">WeChat</h3>
     <div class="widget wechat-widget">
         <img src="http://blog.giscafer.com/static/images/qrcode_giscafer.jpg" alt="扫码关注" width="250"/>
     </div>
@@ -762,10 +772,10 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   <div class="outer">
     <div id="footer-left">
       &copy; 2014 - 2018 WayXue&nbsp;|&nbsp;
-      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+      Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">
-      联系方式&nbsp;|&nbsp;yi_ta_qi@163.com
+      Contact&nbsp;|&nbsp;yi_ta_qi@163.com
     </div>
   </div>
 </footer>
