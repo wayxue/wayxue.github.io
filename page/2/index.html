@@ -65,6 +65,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-gitlab配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/01/gitlab配置/" class="article-date">
+  <time datetime="2018-02-01T02:47:11.089Z" itemprop="datePublished">2018-02-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/01/gitlab配置/">gitlab 配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h2 id="同时使用github和gitlab的方法"><a href="#同时使用github和gitlab的方法" class="headerlink" title="同时使用github和gitlab的方法"></a>同时使用github和gitlab的方法</h2><ol>
+<li>生成gitlab秘钥<br> ssh-keygen -t rsa -C “email”<br> 重新指定生成秘钥的名称，地址不变</li>
+<li>在.ssh 文件夹下添加 config 文件，内容：<br> #github<br> Host github     <pre><code>HostName github.com                   
+IdentityFile ~/.ssh/id_rsa                   
+</code></pre> #gitlab<br> Host gitlab  <pre><code>HostName gitlab.com  
+IdentityFile ~/.ssh/gitlab_id_rsa
+</code></pre></li>
+<li>初始化<br> git config –local user.name “gitlab用户名”<br> git config –local user.email “email”</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2018/02/01/gitlab配置/" data-id="cje15nozh0008e0fw3jdd6nh3" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/02/01/hello-world/" class="article-date">
@@ -102,7 +151,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cjdjkn75g0009tsfwxwl7ojn2" class="article-share-link">Share</a>
+      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cje15nozc0004e0fw4d5tvms2" class="article-share-link">Share</a>
       
       
       
@@ -140,6 +189,10 @@
       <ul>
         
           <li>
+            <a href="/2018/02/24/remote debug/">remote debug</a>
+          </li>
+        
+          <li>
             <a href="/2018/02/12/MySQL 分库分表/">MySQL 分库分表</a>
           </li>
         
@@ -153,10 +206,6 @@
         
           <li>
             <a href="/2018/02/02/PLSQL 程序性能分析及优化/">PLSQL 优化</a>
-          </li>
-        
-          <li>
-            <a href="/2018/02/01/动态代理/">动态代理</a>
           </li>
         
       </ul>
