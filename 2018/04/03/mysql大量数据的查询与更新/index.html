@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | yitaqi</title>
+  <title>mysql插入语句优化 | yitaqi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="存在这样一个语句1234insert into house (house_name, build_id, house_address, town_id, builds_id)select fw.name, fw.buildingid, fw.houseaddress, build.town_id,  build.builds_id  from fw left join buildon fw.bui">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yitaqi.top/2018/02/01/hello-world/index.html">
+<meta property="og:title" content="mysql插入语句优化">
+<meta property="og:url" content="http://yitaqi.top/2018/04/03/mysql大量数据的查询与更新/index.html">
 <meta property="og:site_name" content="yitaqi">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2018-02-01T01:05:40.794Z">
+<meta property="og:description" content="存在这样一个语句1234insert into house (house_name, build_id, house_address, town_id, builds_id)select fw.name, fw.buildingid, fw.houseaddress, build.town_id,  build.builds_id  from fw left join buildon fw.bui">
+<meta property="og:updated_time" content="2018-04-03T06:46:36.563Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="mysql插入语句优化">
+<meta name="twitter:description" content="存在这样一个语句1234insert into house (house_name, build_id, house_address, town_id, builds_id)select fw.name, fw.buildingid, fw.houseaddress, build.town_id,  build.builds_id  from fw left join buildon fw.bui">
   
     <link rel="alternate" href="/atom.xml" title="yitaqi" type="application/atom+xml">
   
@@ -67,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-mysql大量数据的查询与更新" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/02/01/hello-world/" class="article-date">
-  <time datetime="2018-02-01T01:05:40.794Z" itemprop="datePublished">2018-02-01</time>
+    <a href="/2018/04/03/mysql大量数据的查询与更新/" class="article-date">
+  <time datetime="2018-04-03T06:46:36.515Z" itemprop="datePublished">2018-04-03</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      mysql插入语句优化
     </h1>
   
 
@@ -91,20 +91,20 @@
       
         <!-- Table of Contents -->
         
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h2 id="存在这样一个语句"><a href="#存在这样一个语句" class="headerlink" title="存在这样一个语句"></a>存在这样一个语句</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> house (house_name, build_id, house_address, town_id, builds_id)</span><br><span class="line"><span class="keyword">select</span> fw.name, fw.buildingid, fw.houseaddress, build.town_id,  build.builds_id  <span class="keyword">from</span> </span><br><span class="line">fw <span class="keyword">left</span> <span class="keyword">join</span> <span class="keyword">build</span></span><br><span class="line"><span class="keyword">on</span> fw.buildingid = build.build_id</span><br></pre></td></tr></table></figure>
+<p>表中数据量：<br>house  130万<br>build 80万<br>fw  33万</p>
+<ul>
+<li><p>由于数据量太大，导致这条语句执行时间特别长，2小时都无法实现</p>
+<h2 id="进行语句拆分"><a href="#进行语句拆分" class="headerlink" title="进行语句拆分"></a>进行语句拆分</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> house (house_name, build_id, house_address)</span><br><span class="line"><span class="keyword">select</span> fw.name, fw.buildingid, fw.houseaddress <span class="keyword">from</span> fw </span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> house,<span class="keyword">build</span> <span class="keyword">set</span> house.town_id = build.town_id, house.builds_id=build.builds_id </span><br><span class="line"><span class="keyword">where</span> house.build_id = build.build_id</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第一条sql执行时间只需要20s，第二条sql执行时间是5min，具体原因并不清楚，猜测是第一种方法同时操作三张表mysql频繁的跨库跨表lock table和unlock taoble，时间都花费在表的切换上了，这种执行可能涉及到了大范围的随机跳转操作，这种跳转同时引起了资源竞争，而方法二，将任务进行了队列化，每次只涉及到两张表。</p>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cjfjayqo2000498fwiutfrj4v" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/04/03/mysql大量数据的查询与更新/" data-id="cjfjayqnz000298fwa1jyy9cd" class="article-share-link">分享</a>
       
       
       
@@ -156,15 +156,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/02/01/gitlab配置/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          gitlab 配置
-        
-      </div>
-    </a>
   
+    <a href="/2018/02/24/remote debug/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">remote debug</div>
+    </a>
   
 </nav>
 
@@ -197,7 +193,7 @@
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#存在这样一个语句"><span class="toc-number">1.</span> <span class="toc-text">存在这样一个语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进行语句拆分"><span class="toc-number">2.</span> <span class="toc-text">进行语句拆分</span></a></li></ol>
           </div>
       </div>
     </div>
