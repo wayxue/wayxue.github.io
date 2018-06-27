@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>微服务架构分布式事务 | yitaqi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="微服务概述 微服务是一种架构风格，一个大型复杂软件应用由一个或多个微服务组成。 系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。 每个微服务内聚不同业务模块分布式事务概述   本地事务  一个应用访问一个数据库，通常可以使用一个@Transaction 注解就可以实现ACID  跨库事务  一个应用访问两个数据库，即多数据源  分布式事务  多个应用访问多个数据库 XA/JTA 规范XA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务架构分布式事务">
+<meta property="og:url" content="http://yitaqi.top/2018/06/25/distribute-trasaction/index.html">
+<meta property="og:site_name" content="yitaqi">
+<meta property="og:description" content="微服务概述 微服务是一种架构风格，一个大型复杂软件应用由一个或多个微服务组成。 系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。 每个微服务内聚不同业务模块分布式事务概述   本地事务  一个应用访问一个数据库，通常可以使用一个@Transaction 注解就可以实现ACID  跨库事务  一个应用访问两个数据库，即多数据源  分布式事务  多个应用访问多个数据库 XA/JTA 规范XA">
+<meta property="og:updated_time" content="2018-06-27T09:21:42.068Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微服务架构分布式事务">
+<meta name="twitter:description" content="微服务概述 微服务是一种架构风格，一个大型复杂软件应用由一个或多个微服务组成。 系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。 每个微服务内聚不同业务模块分布式事务概述   本地事务  一个应用访问一个数据库，通常可以使用一个@Transaction 注解就可以实现ACID  跨库事务  一个应用访问两个数据库，即多数据源  分布式事务  多个应用访问多个数据库 XA/JTA 规范XA">
+  
+    <link rel="alternate" href="/atom.xml" title="yitaqi" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">yitaqi</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-distribute-trasaction" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/25/distribute-trasaction/" class="article-date">
+  <time datetime="2018-06-25T08:40:39.538Z" itemprop="datePublished">2018-06-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      微服务架构分布式事务
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h1 id="微服务概述"><a href="#微服务概述" class="headerlink" title="微服务概述"></a>微服务概述</h1><ul>
+<li>微服务是一种架构风格，一个大型复杂软件应用由一个或多个微服务组成。</li>
+<li>系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。</li>
+<li>每个微服务内聚不同业务模块<h1 id="分布式事务概述"><a href="#分布式事务概述" class="headerlink" title="分布式事务概述"></a>分布式事务概述</h1></li>
+</ul>
+<ol>
+<li><p>本地事务</p>
+<p> 一个应用访问一个数据库，通常可以使用一个@Transaction 注解就可以实现ACID</p>
+</li>
+<li><p>跨库事务</p>
+<p> 一个应用访问两个数据库，即多数据源</p>
+</li>
+<li><p>分布式事务</p>
+<p> 多个应用访问多个数据库</p>
+<h1 id="XA-JTA-规范"><a href="#XA-JTA-规范" class="headerlink" title="XA/JTA 规范"></a>XA/JTA 规范</h1><p>XA是事物两阶段提交协议（2PC），XA规范主要定义了事物管理器TM，和资源管理器RM之间的接口。阶段一，prepare，询问每个RM 是否可以提交事物，阶段二，阶段一返回成功状态，则commit 每个RM 上的事物分支，否则，rollback 每个RM 上的事物分支。JTA(Java Transaction Api) 是指用java语言实现这一规范。</p>
+</li>
+</ol>
+<hr>
+<p>开源框架 atomikos 有两个版本，其中TransactionEssentials (开源免费) 支持XA 规范，而ExtremTransactions (收费) 同时支持XA 和TCC。weblogic 也提供了 JTA。简单api 见GitHub。</p>
+<hr>
+<p>两阶段提交很大概率的解决了跨库事务的问题（对于极小概率的情况下可使用补偿机制）。其缺点是不同数据库同时开启事务，使用行锁占用大量数据库资源，效率会非常低。</p>
+<h1 id="柔性事务"><a href="#柔性事务" class="headerlink" title="柔性事务"></a>柔性事务</h1><h2 id="CAP理论"><a href="#CAP理论" class="headerlink" title="CAP理论"></a>CAP理论</h2><blockquote>
+<p>开发大规模的分布式系统时会遇到三个特性：一致性（Consistency）、可用性（Availability）、分区容错（Partition-tolerance），而一个分布式系统最多只能满足其中的两项。</p>
+<p>分区容错性是分布式系统必然面对和解决的问题，因此系统架构师往往需要把精力花在如何根据业务特点在C（一致性）和A（可用性）之间寻求平衡。<br>而JTA两阶段提交协议的分布式事物方案强调的是强一致性，牺牲了效率，可用性较低，实际应用并不多。</p>
+<h2 id="BASE-理论"><a href="#BASE-理论" class="headerlink" title="BASE 理论"></a>BASE 理论</h2><ul>
+<li>基本可用（Basically Available）</li>
+</ul>
+</blockquote>
+<pre><code>指分布式系统在出现不可预知故障的时候，允许损失部分可用性。
+</code></pre><ul>
+<li><p>软状态（Soft State）</p>
+<p>  指允许系统中的数据存在中间状态，并认为该中间状态的存在不会影响系统的整体可用性，即允许系统在不同节点的数据副本之间进行数据同步的过程存在延时。</p>
+</li>
+<li><p>最终一致（Eventrual Consistency）</p>
+<p>  强调的是所有的数据更新操作，在经过一段时间的同步之后，最终都能够达到一个一致的状态。因此，最终一致性的本质是需要系统保证最终数据能够达到一致，而不需要实时保证系统数据的强一致性。</p>
+<h2 id="最大努力通知方案"><a href="#最大努力通知方案" class="headerlink" title="最大努力通知方案"></a>最大努力通知方案</h2><p>  最简单的一种柔性事务，使用与一些最终一致性时间敏感度低的业务，且被动方处理结果不影响主动方的处理结果。典型的使用场景：如银行通知、商户通知等。<br>插入图片</p>
+<h2 id="TCC两阶段补偿型方案"><a href="#TCC两阶段补偿型方案" class="headerlink" title="TCC两阶段补偿型方案"></a>TCC两阶段补偿型方案</h2><blockquote>
+<p>TCC是Try-Confirm-Cancel</p>
+</blockquote>
+</li>
+<li><p>Try阶段</p>
+<p>  完成所有业务检查（一致性），预留业务资源（准隔离性）<br>  如下图航班预定案例的阶段1，机票就是业务资源，所有的资源提供者（航空公司）预留都成功，try阶段才算成功。</p>
+</li>
+<li><p>Confirm阶段</p>
+<p>  确认执行业务操作，不做任何业务检查，只使用Try阶段预留的业务资源。</p>
+</li>
+<li><p>Cancel阶段</p>
+<p>  取消Try阶段预留的业务资源。Try阶段出现异常时，取消所有业务资源预留请求。</p>
+<h2 id="TCC与XA-JTA对比"><a href="#TCC与XA-JTA对比" class="headerlink" title="TCC与XA/JTA对比"></a>TCC与XA/JTA对比</h2></li>
+<li>XA是资源层面的分布式事物，强一致性，在两阶段提交的整个过程中，一直会持有资源的锁。</li>
+<li>TCC是业务层面的分布式事物，最终一致性，不会一直持有资源的锁。</li>
+</ul>
+<h2 id="TCC的开源框架实现"><a href="#TCC的开源框架实现" class="headerlink" title="TCC的开源框架实现"></a>TCC的开源框架实现</h2><blockquote>
+<p>Atomikos，tcc-transaction, spring-cloud-rest-tcc, 支付宝tcc</p>
+<h2 id="可靠消息最终一致性方案"><a href="#可靠消息最终一致性方案" class="headerlink" title="可靠消息最终一致性方案"></a>可靠消息最终一致性方案</h2><ul>
+<li>基于Rocket MQ</li>
+<li>基于普通的消息队列中间件</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2018/06/25/distribute-trasaction/" data-id="cjiwxop560003e0fwy8ku26qn" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>Recommended Posts</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/03/binary tree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">二叉树节点交换</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">Content</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#微服务概述"><span class="toc-number">1.</span> <span class="toc-text">微服务概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分布式事务概述"><span class="toc-number">2.</span> <span class="toc-text">分布式事务概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XA-JTA-规范"><span class="toc-number">3.</span> <span class="toc-text">XA/JTA 规范</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#柔性事务"><span class="toc-number">4.</span> <span class="toc-text">柔性事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CAP理论"><span class="toc-number">4.1.</span> <span class="toc-text">CAP理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASE-理论"><span class="toc-number">4.2.</span> <span class="toc-text">BASE 理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最大努力通知方案"><span class="toc-number">4.3.</span> <span class="toc-text">最大努力通知方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCC两阶段补偿型方案"><span class="toc-number">4.4.</span> <span class="toc-text">TCC两阶段补偿型方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCC与XA-JTA对比"><span class="toc-number">4.5.</span> <span class="toc-text">TCC与XA/JTA对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCC的开源框架实现"><span class="toc-number">4.6.</span> <span class="toc-text">TCC的开源框架实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可靠消息最终一致性方案"><span class="toc-number">4.7.</span> <span class="toc-text">可靠消息最终一致性方案</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2018 WayXue&nbsp;|&nbsp;
+      Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      Contact&nbsp;|&nbsp;yi_ta_qi@163.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>
