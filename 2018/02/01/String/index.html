@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://yitaqi.top/2018/02/01/String/index.html">
 <meta property="og:site_name" content="yitaqi">
 <meta property="og:description" content="StringBuilder &amp;amp; StringBuffer String ：  String a = “abc”;  String b = “1”;  String c = a + b; //三个对象  String d = “abc” + “1”; //一个对象 StringBuffer : 线程安全的； StringBuilder : 线程不安全的； 三者执行速度：String &amp;lt;">
-<meta property="og:updated_time" content="2018-02-01T07:05:11.267Z">
+<meta property="og:updated_time" content="2018-07-14T15:26:55.652Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="String">
 <meta name="twitter:description" content="StringBuilder &amp;amp; StringBuffer String ：  String a = “abc”;  String b = “1”;  String c = a + b; //三个对象  String d = “abc” + “1”; //一个对象 StringBuffer : 线程安全的； StringBuilder : 线程不安全的； 三者执行速度：String &amp;lt;">
@@ -41,7 +41,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
@@ -94,16 +94,19 @@
         <h2 id="StringBuilder-amp-StringBuffer"><a href="#StringBuilder-amp-StringBuffer" class="headerlink" title="StringBuilder &amp; StringBuffer"></a>StringBuilder &amp; StringBuffer</h2><ul>
 <li>String ：<br>  String a = “abc”;<br>  String b = “1”;<br>  String c = a + b; //三个对象<br>  String d = “abc” + “1”; //一个对象</li>
 <li>StringBuffer : 线程安全的；</li>
-<li>StringBuilder : 线程不安全的；<blockquote>
-<p>三者执行速度：String &lt; StringBuffer &lt; StringBuilder</p>
-</blockquote>
-</li>
+<li>StringBuilder : 线程不安全的；</li>
+<li>三者执行速度：String &lt; StringBuffer &lt; StringBuilder</li>
+<li>StringBuffer 和 StringBuilder 中的方法差不多，但是StringBuffer 中的方法都是由 synchronized修饰的，因此执行速度会慢一点。而 String 一经创建就不可更改，每次对其操作会产生新的对象，所以速度慢。</li>
+<li>String 、 StringBuffer 、 StringBuilder 都是使用 char[] 存储的。</li>
+<li>String适用于少量字符串操作</li>
+<li>StringBuffer 适用于多线程大量字符串操作</li>
+<li>StringBuilder 适用于单线程大量字符串操作时</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjiwyuw2w00047kfwlcava59e" class="article-share-link">分享</a>
+      <a data-url="http://yitaqi.top/2018/02/01/String/" data-id="cjjlkir2k0001fwfw37tvbcna" class="article-share-link">Delen</a>
       
       
       
@@ -113,7 +116,7 @@
     
  <script src="/jquery/jquery.min.js"></script>
   <div id="random_posts">
-    <h2>推荐文章</h2>
+    <h2>Recommended Posts</h2>
     <div class="random_posts_ul">
       <script>
           var random_count =4
@@ -156,7 +159,7 @@
 <nav id="article-nav">
   
     <a href="/2018/02/01/动态代理/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
+      <strong class="article-nav-caption">Nieuwer</strong>
       <div class="article-nav-title">
         
           动态代理
@@ -166,7 +169,7 @@
   
   
     <a href="/2018/02/01/获取aop代理对象的三种方式/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
+      <strong class="article-nav-caption">Ouder</strong>
       <div class="article-nav-title">如何获取 AOP 代理对象</div>
     </a>
   
@@ -199,7 +202,7 @@
     
       <div class="widget" id="toc-widget-fixed">
       
-        <strong class="toc-title">文章目录</strong>
+        <strong class="toc-title">Content</strong>
         <div class="toc-widget-list">
               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#StringBuilder-amp-StringBuffer"><span class="toc-number">1.</span> <span class="toc-text">StringBuilder &amp; StringBuffer</span></a></li></ol>
           </div>
@@ -231,10 +234,10 @@
   <div class="outer">
     <div id="footer-left">
       &copy; 2014 - 2018 WayXue&nbsp;|&nbsp;
-      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+      Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">
-      联系方式&nbsp;|&nbsp;yi_ta_qi@163.com
+      Contact&nbsp;|&nbsp;yi_ta_qi@163.com
     </div>
   </div>
 </footer>
