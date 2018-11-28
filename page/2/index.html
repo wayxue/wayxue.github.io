@@ -37,7 +37,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="搜尋"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
@@ -65,10 +65,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-获取aop代理对象的三种方式" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-gitlab配置" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/02/01/获取aop代理对象的三种方式/" class="article-date">
-  <time datetime="2018-02-01T02:47:21.373Z" itemprop="datePublished">2018-02-01</time>
+    <a href="/2018/11/24/gitlab配置/" class="article-date">
+  <time datetime="2018-11-24T13:04:16.746Z" itemprop="datePublished">2018-11-24</time>
 </a>
     
   </div>
@@ -79,7 +79,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/01/获取aop代理对象的三种方式/">如何获取 AOP 代理对象</a>
+      <a class="article-title" href="/2018/11/24/gitlab配置/">gitlab 配置</a>
     </h1>
   
 
@@ -89,40 +89,20 @@
       
         <!-- Table of Contents -->
         
-        <h2 id="方法一-通过ThreadLocal-获取"><a href="#方法一-通过ThreadLocal-获取" class="headerlink" title="方法一 通过ThreadLocal 获取"></a>方法一 通过ThreadLocal 获取</h2><p>AopContext.currentProxy();<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">child</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">       userMapper.save(<span class="string">"zhaobuzhu"</span>, <span class="number">12</span>);</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">father</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        UserService userService = (UserService) AopContext.currentProxy();</span><br><span class="line">        userService.child();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    userMapper.save(<span class="string">"wangbaobao"</span>, <span class="number">12</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="使用AOP-代理后的方法调用执行流程"><a href="#使用AOP-代理后的方法调用执行流程" class="headerlink" title="使用AOP 代理后的方法调用执行流程"></a>使用AOP 代理后的方法调用执行流程</h3><ol>
-<li>调用者调用代理对象，通过 ThreadLocal 暴露代理对象, AopContext.setCurrentProxy(proxy) ，并保存上次代理对象 oldProxy 。</li>
-<li>开启事物。</li>
-<li>进行其他代理操作。</li>
-<li>调用目标对象的目标方法。</li>
-<li>目标方法调用返回。</li>
-<li>进行其他代理操作。</li>
-<li>关闭事物。</li>
-<li>还原 ThreadLocal 绑定的代理对象为上次代理对象 AopContext.setCurrentProxy(oldProxy) 。    返回至调用处。<h2 id="方法二-通过初始化方法在目标对象中注入代理对象"><a href="#方法二-通过初始化方法在目标对象中注入代理对象" class="headerlink" title="方法二 通过初始化方法在目标对象中注入代理对象"></a>方法二 通过初始化方法在目标对象中注入代理对象</h2></li>
+        <h2 id="同时使用github和gitlab的方法"><a href="#同时使用github和gitlab的方法" class="headerlink" title="同时使用github和gitlab的方法"></a>同时使用github和gitlab的方法</h2><ol>
+<li>生成gitlab秘钥<br> ssh-keygen -t rsa -C “email”<br> 重新指定生成秘钥的名称，地址不变</li>
+<li>在.ssh 文件夹下添加 config 文件，内容：<br> #github<br> Host github     <pre><code>HostName github.com                   
+IdentityFile ~/.ssh/id_rsa                   
+</code></pre> #gitlab<br> Host gitlab  <pre><code>HostName gitlab.com  
+IdentityFile ~/.ssh/gitlab_id_rsa
+</code></pre></li>
+<li>初始化<br> git config –local user.name “gitlab用户名”<br> git config –local user.email “email”</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> ApplicationContext context;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> UserService userServiceProxy;</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserServiceProxy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.userServiceProxy = context.getBean(UserService.class);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">father2</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        userServiceProxy.child();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    userMapper.save(<span class="string">"wangbaobao"</span>, <span class="number">12</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>如果存在循环依赖注入，可能会出现问题。</li>
-</ul>
-<h2 id="方法三-通过-BeanPostProcessor-在目标对象中注入代理对象"><a href="#方法三-通过-BeanPostProcessor-在目标对象中注入代理对象" class="headerlink" title="方法三 通过 BeanPostProcessor 在目标对象中注入代理对象"></a>方法三 通过 BeanPostProcessor 在目标对象中注入代理对象</h2><ol>
-<li><p>定义BeanPostProcessor 需要使用的标识接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BeanSelfAware</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注入自己的属性</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> bean</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setSelf</span><span class="params">(Object bean)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Bean 实现标识接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Transactional</span>(isolation = Isolation.DEFAULT, rollbackFor = Exception.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span>, <span class="title">BeanSelfAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> UserService self;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">father3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	    <span class="keyword">try</span> &#123;</span><br><span class="line">	        self.child();</span><br><span class="line">	    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">	        e.printStackTrace();</span><br><span class="line">	    &#125;</span><br><span class="line">	    userMapper.save(<span class="string">"wangbaobao"</span>, <span class="number">12</span>);</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSelf</span><span class="params">(Object self)</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">this</span>.self = (UserService) self;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>定义类实现 BeanPostProcessor </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InjectBeanSelfProcessor</span> <span class="keyword">implements</span> <span class="title">BeanPostProcessor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">postProcessBeforeInitialization</span><span class="params">(Object o, String s)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">postProcessAfterInitialization</span><span class="params">(Object o, String s)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (o <span class="keyword">instanceof</span> BeanSelfAware) &#123;</span><br><span class="line">            System.out.println(<span class="string">"inject proxy"</span> + o.getClass());</span><br><span class="line">            BeanSelfAware myBean = (BeanSelfAware) o;</span><br><span class="line">            myBean.setSelf(o);</span><br><span class="line">            <span class="keyword">return</span> myBean;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> o;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ul>
-<li>可能不支持循环依赖，可能出现问题。</li>
-</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/获取aop代理对象的三种方式/" data-id="cjjlkir35000dfwfwtxcjc9lm" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/gitlab配置/" data-id="cjp16mqnv0006s4jfw8uz9bik" class="article-share-link">Share</a>
       
       
       
@@ -136,8 +116,8 @@
   
     <article id="post-excellent" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/02/01/excellent/" class="article-date">
-  <time datetime="2018-02-01T02:47:11.093Z" itemprop="datePublished">2018-02-01</time>
+    <a href="/2018/11/24/excellent/" class="article-date">
+  <time datetime="2018-11-24T13:04:16.744Z" itemprop="datePublished">2018-11-24</time>
 </a>
     
   </div>
@@ -148,7 +128,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/01/excellent/">登高 杜甫</a>
+      <a class="article-title" href="/2018/11/24/excellent/">登高 杜甫</a>
     </h1>
   
 
@@ -159,7 +139,7 @@
         <!-- Table of Contents -->
         
         <blockquote>
-<p>风急天高猿啸哀，渚清沙白鸟飞回。</p>
+<p>风急天高猿啸哀，渚清沙白鸟飞回。                             </p>
 <p>无边落木萧萧下，不尽长江滚滚来。</p>
 <p>万里悲秋常作客，百年多病独登台。</p>
 <p>艰难苦恨繁霜鬓，潦倒新停浊酒杯。</p>
@@ -168,7 +148,109 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/excellent/" data-id="cjjlkir2s0005fwfwcn63w50l" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/excellent/" data-id="cjp16mqnj0001s4jfsd78ekdw" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-distribute-trasaction" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/24/distribute-trasaction/" class="article-date">
+  <time datetime="2018-11-24T13:04:16.742Z" itemprop="datePublished">2018-11-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/24/distribute-trasaction/">微服务架构分布式事务</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h1 id="微服务概述"><a href="#微服务概述" class="headerlink" title="微服务概述"></a>微服务概述</h1><ul>
+<li>微服务是一种架构风格，一个大型复杂软件应用由一个或多个微服务组成。</li>
+<li>系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。</li>
+<li>每个微服务内聚不同业务模块</li>
+</ul>
+<h1 id="分布式事务概述"><a href="#分布式事务概述" class="headerlink" title="分布式事务概述"></a>分布式事务概述</h1><ol>
+<li><p>本地事务</p>
+<p> 一个应用访问一个数据库，通常可以使用一个@Transaction 注解就可以实现ACID</p>
+</li>
+<li><p>跨库事务</p>
+<p> 一个应用访问两个数据库，即多数据源</p>
+</li>
+<li><p>分布式事务</p>
+<p> 多个应用访问多个数据库</p>
+</li>
+</ol>
+<h1 id="XA-JTA-规范"><a href="#XA-JTA-规范" class="headerlink" title="XA/JTA 规范"></a>XA/JTA 规范</h1><p>XA是事物两阶段提交协议（2PC），XA规范主要定义了事物管理器TM，和资源管理器RM之间的接口。阶段一，prepare，询问每个RM 是否可以提交事物，阶段二，阶段一返回成功状态，则commit 每个RM 上的事物分支，否则，rollback 每个RM 上的事物分支。JTA(Java Transaction Api) 是指用java语言实现这一规范。</p>
+<hr>
+<p>开源框架 atomikos 有两个版本，其中TransactionEssentials (开源免费) 支持XA 规范，而ExtremTransactions (收费) 同时支持XA 和TCC。weblogic 也提供了 JTA。简单api 见<a href="https://github.com/wayxue/XA-JTA" title="XA-JTA" target="_blank" rel="noopener">https://github.com/wayxue/XA-JTA</a></p>
+<hr>
+<p>两阶段提交很大概率的解决了跨库事务的问题（对于极小概率的情况下可使用补偿机制）。其缺点是不同数据库同时开启事务，使用行锁占用大量数据库资源，效率会非常低。</p>
+<h1 id="柔性事务"><a href="#柔性事务" class="headerlink" title="柔性事务"></a>柔性事务</h1><h2 id="CAP理论"><a href="#CAP理论" class="headerlink" title="CAP理论"></a>CAP理论</h2><blockquote>
+<p>开发大规模的分布式系统时会遇到三个特性：一致性（Consistency）、可用性（Availability）、分区容错（Partition-tolerance），而一个分布式系统最多只能满足其中的两项。</p>
+<p>分区容错性是分布式系统必然面对和解决的问题，因此系统架构师往往需要把精力花在如何根据业务特点在C（一致性）和A（可用性）之间寻求平衡。而JTA两阶段提交协议的分布式事物方案强调的是强一致性，牺牲了效率，可用性较低，实际应用并不多。</p>
+</blockquote>
+<h2 id="BASE-理论"><a href="#BASE-理论" class="headerlink" title="BASE 理论"></a>BASE 理论</h2><ul>
+<li><p>基本可用（Basically Available）</p>
+<p>  指分布式系统在出现不可预知故障的时候，允许损失部分可用性。</p>
+</li>
+<li><p>软状态（Soft State）</p>
+<p>  指允许系统中的数据存在中间状态，并认为该中间状态的存在不会影响系统的整体可用性，即允许系统在不同节点的数据副本之间进行数据同步的过程存在延时。</p>
+</li>
+<li><p>最终一致（Eventrual Consistency）</p>
+<p>  强调的是所有的数据更新操作，在经过一段时间的同步之后，最终都能够达到一个一致的状态。因此，最终一致性的本质是需要系统保证最终数据能够达到一致，而不需要实时保证系统数据的强一致性。</p>
+</li>
+</ul>
+<h2 id="最大努力通知方案"><a href="#最大努力通知方案" class="headerlink" title="最大努力通知方案"></a>最大努力通知方案</h2><p>最简单的一种柔性事务，使用与一些最终一致性时间敏感度低的业务，且被动方处理结果不影响主动方的处理结果。典型的使用场景：如银行通知、商户通知等。<br><img src="/image/transaction/tcc-normal.png" alt=""></p>
+<h2 id="TCC两阶段补偿型方案"><a href="#TCC两阶段补偿型方案" class="headerlink" title="TCC两阶段补偿型方案"></a>TCC两阶段补偿型方案</h2><p>TCC是Try-Confirm-Cancel</p>
+<ul>
+<li><p>Try阶段</p>
+<p>  完成所有业务检查（一致性），预留业务资源（准隔离性）<br>  如下图航班预定案例的阶段1，机票就是业务资源，所有的资源提供者（航空公司）预留都成功，try阶段才算成功。</p>
+</li>
+<li><p>Confirm阶段</p>
+<p>  确认执行业务操作，不做任何业务检查，只使用Try阶段预留的业务资源。</p>
+</li>
+<li><p>Cancel阶段</p>
+<p>  取消Try阶段预留的业务资源。Try阶段出现异常时，取消所有业务资源预留请求。<br><img src="/image/transaction/ticket1.png" alt=""><br><img src="/image/transaction/ticket2.png" alt=""><br><img src="/image/transaction/ticket3.png" alt=""></p>
+</li>
+</ul>
+<h2 id="TCC与XA-JTA对比"><a href="#TCC与XA-JTA对比" class="headerlink" title="TCC与XA/JTA对比"></a>TCC与XA/JTA对比</h2><ul>
+<li>XA是资源层面的分布式事物，强一致性，在两阶段提交的整个过程中，一直会持有资源的锁。</li>
+<li>TCC是业务层面的分布式事物，最终一致性，不会一直持有资源的锁。</li>
+</ul>
+<h2 id="TCC的开源框架实现"><a href="#TCC的开源框架实现" class="headerlink" title="TCC的开源框架实现"></a>TCC的开源框架实现</h2><p>Atomikos，tcc-transaction, spring-cloud-rest-tcc, 支付宝tcc</p>
+<h2 id="可靠消息最终一致性方案"><a href="#可靠消息最终一致性方案" class="headerlink" title="可靠消息最终一致性方案"></a>可靠消息最终一致性方案</h2><ul>
+<li>基于Rocket MQ</li>
+</ul>
+<p><img src="/image/transaction/tcc-rocketmq.png" alt=""></p>
+<ul>
+<li>基于普通的消息队列中间件</li>
+</ul>
+<p><img src="/image/transaction/tcc-message.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2018/11/24/distribute-trasaction/" data-id="cjp16mqo5000bs4jfz1v2k1yi" class="article-share-link">Share</a>
       
       
       
@@ -182,8 +264,8 @@
   
     <article id="post-comparators" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/02/01/comparators/" class="article-date">
-  <time datetime="2018-02-01T02:47:11.091Z" itemprop="datePublished">2018-02-01</time>
+    <a href="/2018/11/24/comparators/" class="article-date">
+  <time datetime="2018-11-24T13:04:16.741Z" itemprop="datePublished">2018-11-24</time>
 </a>
     
   </div>
@@ -194,7 +276,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/01/comparators/">comparators</a>
+      <a class="article-title" href="/2018/11/24/comparators/">comparators</a>
     </h1>
   
 
@@ -218,7 +300,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/comparators/" data-id="cjjlkir2r0004fwfw7nf99vu3" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/comparators/" data-id="cjp16mqnr0004s4jfqngk1ebd" class="article-share-link">Share</a>
       
       
       
@@ -230,10 +312,10 @@
 
 
   
-    <article id="post-gitlab配置" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-binary tree" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/02/01/gitlab配置/" class="article-date">
-  <time datetime="2018-02-01T02:47:11.089Z" itemprop="datePublished">2018-02-01</time>
+    <a href="/2018/11/24/binary tree/" class="article-date">
+  <time datetime="2018-11-24T13:04:16.728Z" itemprop="datePublished">2018-11-24</time>
 </a>
     
   </div>
@@ -244,7 +326,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/01/gitlab配置/">gitlab 配置</a>
+      <a class="article-title" href="/2018/11/24/binary tree/">二叉树节点交换</a>
     </h1>
   
 
@@ -254,69 +336,14 @@
       
         <!-- Table of Contents -->
         
-        <h2 id="同时使用github和gitlab的方法"><a href="#同时使用github和gitlab的方法" class="headerlink" title="同时使用github和gitlab的方法"></a>同时使用github和gitlab的方法</h2><ol>
-<li>生成gitlab秘钥<br> ssh-keygen -t rsa -C “email”<br> 重新指定生成秘钥的名称，地址不变</li>
-<li>在.ssh 文件夹下添加 config 文件，内容：<br> #github<br> Host github     <pre><code>HostName github.com                   
-IdentityFile ~/.ssh/id_rsa                   
-</code></pre> #gitlab<br> Host gitlab  <pre><code>HostName gitlab.com  
-IdentityFile ~/.ssh/gitlab_id_rsa
-</code></pre></li>
-<li>初始化<br> git config –local user.name “gitlab用户名”<br> git config –local user.email “email”</li>
-</ol>
+        <h2 id="定义节点类"><a href="#定义节点类" class="headerlink" title="定义节点类"></a>定义节点类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> TreeNode left;</span><br><span class="line">    <span class="keyword">public</span> TreeNode right;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> val;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.val = val;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> left = <span class="keyword">this</span>.left == <span class="keyword">null</span> ? <span class="number">0</span> : <span class="keyword">this</span>.left.val;</span><br><span class="line">        <span class="keyword">int</span> right = <span class="keyword">this</span>.right == <span class="keyword">null</span> ? <span class="number">0</span> : <span class="keyword">this</span>.right.val;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"root : "</span> + val + <span class="string">" ,left : "</span> + left + <span class="string">" ,right : "</span> + right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="交换方法"><a href="#交换方法" class="headerlink" title="交换方法"></a>交换方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TreeNode <span class="title">exchangeChild</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeNode tmp = exchangeChild(root.left);</span><br><span class="line">        root.left = exchangeChild(root.right);</span><br><span class="line">        root.right = tmp;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TreeNode root = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">        root.left = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line">        root.right = <span class="keyword">new</span> TreeNode(<span class="number">3</span>);</span><br><span class="line">        root.left.right = <span class="keyword">new</span> TreeNode(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(root);</span><br><span class="line">        System.out.println(root.left);</span><br><span class="line">        System.out.println(root.right);</span><br><span class="line"></span><br><span class="line">        TreeNode newRoot = ExchangeTreeNode.exchangeChild(root);</span><br><span class="line">        System.out.println(newRoot);</span><br><span class="line">        System.out.println(newRoot.left);</span><br><span class="line">        System.out.println(newRoot.right);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/gitlab配置/" data-id="cjjlkir2y0009fwfw5hwspmpo" class="article-share-link">Delen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
- 
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/02/01/hello-world/" class="article-date">
-  <time datetime="2018-02-01T01:05:40.794Z" itemprop="datePublished">2018-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/01/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- Table of Contents -->
-        
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/02/01/hello-world/" data-id="cjjlkir32000bfwfwcvfvpt3e" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/binary tree/" data-id="cjp16mqoh000ds4jfno21lsy4" class="article-share-link">Share</a>
       
       
       
@@ -331,7 +358,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/">&laquo; Vorige</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo; 上一頁</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
   </nav>
 </section>
            
@@ -349,28 +376,28 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">Recente berichten</h3>
+    <h3 class="widget-title recent-posts">最新文章</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2018/06/25/distribute-trasaction/">微服务架构分布式事务</a>
+            <a href="/2018/11/24/获取aop代理对象的三种方式/">如何获取 AOP 代理对象</a>
           </li>
         
           <li>
-            <a href="/2018/04/03/binary tree/">二叉树节点交换</a>
+            <a href="/2018/11/24/统一 http 接口的实现/">统一 http 接口的实现</a>
           </li>
         
           <li>
-            <a href="/2018/04/03/mysql大量数据的查询与更新/">mysql插入语句优化</a>
+            <a href="/2018/11/24/动态代理/">动态代理</a>
           </li>
         
           <li>
-            <a href="/2018/02/24/remote debug/">remote debug</a>
+            <a href="/2018/11/24/String/">String</a>
           </li>
         
           <li>
-            <a href="/2018/02/12/MySQL 分库分表/">MySQL 分库分表</a>
+            <a href="/2018/11/24/spring boot 使用servlet/">spring boot 使用servlet</a>
           </li>
         
       </ul>
@@ -398,7 +425,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">
-      Contact&nbsp;|&nbsp;yi_ta_qi@163.com
+      联系方式&nbsp;|&nbsp;yi_ta_qi@163.com
     </div>
   </div>
 </footer>

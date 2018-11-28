@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>统一 http 接口的实现 | yitaqi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。 原始的MVC 模式 实现统一接口具体实现： 需要注意的问题get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。可以通过转义的方式暂时解决，{：%7B，}：%7D。如：localhost:8080/ser?method=123&amp;amp;params={}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="统一 http 接口的实现">
+<meta property="og:url" content="http://yitaqi.top/2018/11/24/统一 http 接口的实现/index.html">
+<meta property="og:site_name" content="yitaqi">
+<meta property="og:description" content="由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。 原始的MVC 模式 实现统一接口具体实现： 需要注意的问题get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。可以通过转义的方式暂时解决，{：%7B，}：%7D。如：localhost:8080/ser?method=123&amp;amp;params={}">
+<meta property="og:image" content="http://yitaqi.top/image/MVC.png">
+<meta property="og:image" content="http://yitaqi.top/image/MVC2.png">
+<meta property="og:image" content="http://yitaqi.top/image/MVC3.png">
+<meta property="og:updated_time" content="2018-02-11T08:54:59.449Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="统一 http 接口的实现">
+<meta name="twitter:description" content="由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。 原始的MVC 模式 实现统一接口具体实现： 需要注意的问题get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。可以通过转义的方式暂时解决，{：%7B，}：%7D。如：localhost:8080/ser?method=123&amp;amp;params={}">
+<meta name="twitter:image" content="http://yitaqi.top/image/MVC.png">
+  
+    <link rel="alternate" href="/atom.xml" title="yitaqi" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜尋"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">yitaqi</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-统一 http 接口的实现" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/24/统一 http 接口的实现/" class="article-date">
+  <time datetime="2018-11-24T13:04:16.766Z" itemprop="datePublished">2018-11-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      统一 http 接口的实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>由于原始的MVC 模式下，大量API 接口会导致代码量大，而且很有可能接口风格乱七八糟，调用起来很麻烦，容易出错。</p>
+<h2 id="原始的MVC-模式"><a href="#原始的MVC-模式" class="headerlink" title="原始的MVC 模式"></a>原始的MVC 模式</h2><p><img src="/image/MVC.png" alt=""></p>
+<h2 id="实现统一接口"><a href="#实现统一接口" class="headerlink" title="实现统一接口"></a>实现统一接口</h2><p><img src="/image/MVC2.png" alt=""><br>具体实现：<br><img src="/image/MVC3.png" alt=""></p>
+<h2 id="需要注意的问题"><a href="#需要注意的问题" class="headerlink" title="需要注意的问题"></a>需要注意的问题</h2><p>get请求时路径上的参数不能出现{}，是一个400 bad request 的错误。<br>可以通过转义的方式暂时解决，{：%7B，}：%7D。<br>如：<br>localhost:8080/ser?method=123&amp;params={}<br>localhost:8080/ser?method=123&amp;params=%7B%7D</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a href="https://github.com/wayxue/httpapi/tree/master/Gate" target="_blank" rel="noopener">https://github.com/wayxue/httpapi/tree/master/Gate</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2018/11/24/统一 http 接口的实现/" data-id="cjp16mqny0008s4jftu335hzs" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/24/获取aop代理对象的三种方式/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          如何获取 AOP 代理对象
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/24/动态代理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">动态代理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#原始的MVC-模式"><span class="toc-number">1.</span> <span class="toc-text">原始的MVC 模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现统一接口"><span class="toc-number">2.</span> <span class="toc-text">实现统一接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需要注意的问题"><span class="toc-number">3.</span> <span class="toc-text">需要注意的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码"><span class="toc-number">4.</span> <span class="toc-text">代码</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2018 WayXue&nbsp;|&nbsp;
+      Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;yi_ta_qi@163.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>
