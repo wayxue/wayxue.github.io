@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>yitaqi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="title：输出不带“？”的完整sql语句的配置  pom.xml 中添加依赖包 12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;com.googlecode.log4jdbc&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;log4jdbc&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;1.2&amp;lt;/vers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yitaqi">
+<meta property="og:url" content="http://yitaqi.top/2019/03/06/jdbcLog/index.html">
+<meta property="og:site_name" content="yitaqi">
+<meta property="og:description" content="title：输出不带“？”的完整sql语句的配置  pom.xml 中添加依赖包 12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;com.googlecode.log4jdbc&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;log4jdbc&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;1.2&amp;lt;/vers">
+<meta property="og:updated_time" content="2019-03-06T03:26:41.811Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="yitaqi">
+<meta name="twitter:description" content="title：输出不带“？”的完整sql语句的配置  pom.xml 中添加依赖包 12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;com.googlecode.log4jdbc&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;log4jdbc&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;1.2&amp;lt;/vers">
+  
+    <link rel="alternate" href="/atom.xml" title="yitaqi" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">yitaqi</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-jdbcLog" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/06/jdbcLog/" class="article-date">
+  <time datetime="2019-03-06T03:27:50.387Z" itemprop="datePublished">2019-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <hr>
+<h2 id="title：输出不带“？”的完整sql语句的配置"><a href="#title：输出不带“？”的完整sql语句的配置" class="headerlink" title="title：输出不带“？”的完整sql语句的配置 "></a>title：输出不带“？”的完整sql语句的配置 </h2><ol>
+<li><p>pom.xml 中添加依赖包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.googlecode.log4jdbc&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;log4jdbc&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改数据源配置（以spring-boot application.properties 为例）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 修改前</span><br><span class="line">spring.datasource.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="line">spring.datasource.url=jdbc:mysql://localhost:3306/db_test?autoReconnect=true&amp;characterEncoding=utf-8</span><br><span class="line"># 修改后</span><br><span class="line">spring.datasource.driver-class-name=net.sf.log4jdbc.DriverSpy</span><br><span class="line">spring.datasource.url=jdbc:log4jdbc:mysql://localhost:3306/db_test?autoReconnect=true&amp;characterEncoding=utf-8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置 logback.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;configuration debug=&quot;false&quot;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径--&gt;</span><br><span class="line">    &lt;property name=&quot;LOG_HOME&quot; value=&quot;/web/logs&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;!-- 控制台输出 --&gt;</span><br><span class="line">    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</span><br><span class="line">        &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">            &lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;</span><br><span class="line">            &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;appender name=&quot;FILE&quot;  class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">            &lt;!--日志文件输出的文件名--&gt;</span><br><span class="line">            &lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/app-%d&#123;yyyy-MM-dd&#125;.log&lt;/FileNamePattern&gt;</span><br><span class="line">            &lt;!--日志文件保留天数--&gt;</span><br><span class="line">            &lt;MaxHistory&gt;30&lt;/MaxHistory&gt;</span><br><span class="line">        &lt;/rollingPolicy&gt;</span><br><span class="line">        &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">            &lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;</span><br><span class="line">            &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">        &lt;!--日志文件最大的大小--&gt;</span><br><span class="line">        &lt;triggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">            &lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">        &lt;/triggeringPolicy&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    &lt;!--自定义 appender--&gt;</span><br><span class="line">	&lt;appender name=&quot;mine&quot; class=&quot;com.osa.platform.filter.MyAppender&quot;&gt;&lt;/appender&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;logger name=&quot;jdbc.connection&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.resultset&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.resultsettable&quot; level=&quot;INFO&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.audit&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.sqltiming&quot; level=&quot;INFO&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.sqlonly&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">    </span><br><span class="line"> &lt;!-- 日志输出级别 --&gt;</span><br><span class="line">    &lt;root level=&quot;INFO&quot;&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;FILE&quot; /&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;mine&quot; /&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line">    </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2019/03/06/jdbcLog/" data-id="cjswn8ae400043wjfvuektdte" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/11/spring-tx/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">spring 事物</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#title：输出不带“？”的完整sql语句的配置"><span class="toc-number">1.</span> <span class="toc-text">title：输出不带“？”的完整sql语句的配置 </span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2019 WayXue&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;yi_ta_qi@163.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

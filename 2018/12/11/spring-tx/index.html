@@ -14,7 +14,7 @@
 <meta property="og:image" content="http://yitaqi.top/image/spring-tx/TransactionDefinition.png">
 <meta property="og:image" content="http://yitaqi.top/image/spring-tx/PlatformTransactionManager.png">
 <meta property="og:image" content="http://yitaqi.top/image/spring-tx/TransactionStatus.png">
-<meta property="og:updated_time" content="2018-12-11T15:10:02.023Z">
+<meta property="og:updated_time" content="2018-12-11T15:33:10.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring 事物">
 <meta name="twitter:description" content="数据库事物的基本特性&amp;nbsp;&amp;nbsp;A :原子性（atomicity）：事物中各项操作，要么全部执行，要么全部不执行。&amp;nbsp;&amp;nbsp;C :一致性（consistency）：事物结束后系统状态是一致的。&amp;nbsp;&amp;nbsp;I :隔离性（isolation）：并发执行的事物彼此无法看到对方的中间状态。&amp;nbsp;&amp;nbsp;D :持久性（durability）：事物完成后所做的">
@@ -45,7 +45,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
@@ -96,9 +96,9 @@
         <!-- Table of Contents -->
         
         <ol>
-<li>数据库事物的基本特性<br>&nbsp;&nbsp;<strong>A</strong> :原子性（atomicity）：事物中各项操作，要么全部执行，要么全部不执行。<br>&nbsp;&nbsp;<strong>C</strong> :一致性（consistency）：事物结束后系统状态是一致的。<br>&nbsp;&nbsp;<strong>I</strong> :隔离性（isolation）：并发执行的事物彼此无法看到对方的中间状态。<br>&nbsp;&nbsp;<strong>D</strong> :持久性（durability）：事物完成后所做的改动都会被持久化，即使发生灾难性的失败。<br>&nbsp;&nbsp;在高并发的情况下，要完全保证其ACID特性是非常困难的，除非把所有的事物串行化执行，但带来的负面影响将是性能大打折扣。数据库中存在四种隔离级别，可基于业务进行选择。  </li>
+<li>数据库事物的基本特性<br>&nbsp;&nbsp;<strong>A</strong> :原子性（atomicity）：事物中各项操作，要么全部执行，要么全部不执行。<br>&nbsp;&nbsp;<strong>C</strong> :一致性（consistency）：事物结束后系统状态是一致的。<br>&nbsp;&nbsp;<strong>I</strong> :隔离性（isolation）：并发执行的事物彼此无法看到对方的中间状态。<br>&nbsp;&nbsp;<strong>D</strong> :持久性（durability）：事物完成后所做的改动都会被持久化，即使发生灾难性的失败。<br>&nbsp;&nbsp;在高并发的情况下，要完全保证其ACID特性是非常困难的，除非把所有的事物串行化执行，但带来的负面影响将是性能大打折扣。数据库中存在四种隔离级别，可基于业务进行选择。</li>
 </ol>
-<p><table><br>    <tr><br>        <th>隔离级别</th><br>        <th>脏读(dirty read)</th><br>        <th>不可重复读(non repeatable read)</th><br>        <th>幻读(phantom read)</th><br>    </tr><br>    <tr><br>        <th>读未提交(read uncommitted)</th><br>        <th>maybe</th><br>        <th>maybe</th><br>        <th>maybe</th><br>    </tr><br>    <tr><br>        <th>读已提交(read committed)</th><br>        <th>n</th><br>        <th>maybe</th><br>        <th>maybe</th><br>    </tr><br>    <tr><br>        <th>可重复读(repeatable read)</th><br>        <th>n</th><br>        <th>n</th><br>        <th>maybe</th><br>    </tr><br>    <tr><br>        <th>串行化(serializable)</th><br>        <th>n</th><br>        <th>n</th><br>        <th>n</th><br>    </tr><br></table><br>&nbsp;&nbsp;脏读:一个事物读取到另一个事物未提交的更新数据<br>&nbsp;&nbsp;不可重复读：在同一事物中，多次读取同一数据返回的结果有所不同，换句话说，后续读取可以读取到另一事物的已提交更新数据。相反，“可重复读”在同一事物中多次读取数据时，能够保证所读数据一样，也就是后续读取不能读取到另一事物已提交的更新数据。<br>&nbsp;&nbsp;幻读：查询表中一条数据如果不存在就插入一条，并发的时候却发现，里面居然有两条相同的数据。这就是幻读的问题。<br>&nbsp;&nbsp;for example<br>&nbsp;&nbsp;数据库默认隔离级别：<br>&nbsp;&nbsp;&nbsp;oracle 中默认级别是 read committed<br>&nbsp;&nbsp;&nbsp;mysql 中默认级别是 repeatable read，每个查询语句默认都是一个独立的事物。<br>&nbsp;&nbsp;&nbsp;mysql 查看默认级别的命令：SELECT @@tx_isolation 或者 SELECT @@transaction_isolation(用于高版本)  </p>
+<p><table><tr><th>隔离级别</th><th>脏读(dirty read)</th><th>不可重复读(non repeatable read)</th><th>幻读(phantom read)</th></tr><tr><th>读未提交(read uncommitted)</th><th>maybe</th><th>maybe</th><th>maybe</th></tr><tr><th>读已提交(read committed)</th><th>n</th><th>maybe</th><th>maybe</th></tr><tr><th>可重复读(repeatable read)</th><th>n</th><th>n</th><th>maybe</th></tr><tr><th>串行化(serializable)</th><th>n</th><th>n</th><th>n</th></tr></table><br>&nbsp;&nbsp;脏读:一个事物读取到另一个事物未提交的更新数据<br>&nbsp;&nbsp;不可重复读：在同一事物中，多次读取同一数据返回的结果有所不同，换句话说，后续读取可以读取到另一事物的已提交更新数据。相反，“可重复读”在同一事物中多次读取数据时，能够保证所读数据一样，也就是后续读取不能读取到另一事物已提交的更新数据。<br>&nbsp;&nbsp;幻读：查询表中一条数据如果不存在就插入一条，并发的时候却发现，里面居然有两条相同的数据。这就是幻读的问题。<br>&nbsp;&nbsp;for example<br>&nbsp;&nbsp;数据库默认隔离级别：<br>&nbsp;&nbsp;&nbsp;oracle 中默认级别是 read committed<br>&nbsp;&nbsp;&nbsp;mysql 中默认级别是 repeatable read，每个查询语句默认都是一个独立的事物。<br>&nbsp;&nbsp;&nbsp;mysql 查看默认级别的命令：SELECT @@tx_isolation 或者 SELECT @@transaction_isolation(用于高版本)  </p>
 <ol>
 <li>spring 事物<br>&nbsp;&nbsp;spring 事物是在数据库事物的基础上进行了封装扩展，其主要特性如下：<br>&nbsp;&nbsp;&nbsp;a. 支持原有数据库事物的隔离级别<br>&nbsp;&nbsp;&nbsp;b. 加入了事物传播的概念，提供多个事物的合并或者隔离的功能<br>&nbsp;&nbsp;&nbsp;c. 提供声明式事物，让业务代码与事物隔离，事物变得更易用<br>&nbsp;&nbsp;2.1 spring 事物相关api说明<br>&nbsp;&nbsp;&nbsp;spring 提供了三个接口来使用事物。  </li>
 </ol>
@@ -143,12 +143,12 @@
     &lt;tx:annotation-driven transaction-manager=&quot;txManager&quot;&gt;&lt;/tx:annotation-driven&gt;
 &lt;/beans&gt;
 </code></pre><p>&nbsp;&nbsp;2.4 spring 事物传播机制  </p>
-<p><table><br>    <tr><br>        <th>类别</th><br>        <th>事物传播类型</th><br>        <th>说明</th><br>    </tr><br>    <tr><br>        <th rowspan="3">支持当前事物</th><br>        <th>PROPAGATION_REQUIRED（必须的）</th><br>        <th>如果当前没有事物，就新建一个事物，如果已经存在一个事物，加入到这个事物中。这个是默认的</th><br>    </tr><br>    <tr><br>        <th>PROPAGATION_SUPPORTS（支持）</th><br>        <th>支持当前事物，如果当前没有事物，就以非事物方式执行</th><br>    </tr><br>    <tr><br>        <th>PROPAGATION_MANDATORY（强制）</th><br>        <th>使用当前的事物，如果当前没有事物，就抛出异常</th><br>    </tr><br>    <tr><br>        <th rowspan="3">不支持当前事物</th><br>        <th>PROPAGATION_REQUIRES_NEW（隔离）</th><br>        <th>新建事物，如果当前存在事物，就把当前事物挂起</th><br>    </tr><br>    <tr><br>        <th>PROPAGATION_NOT_SUPPORTED（不支持）</th><br>        <th>以非事物方式执行操作，如果当前存在事物，就把当前事物挂起</th><br>    </tr><br>    <tr><br>        <th>PROPAGATION_NEVER（强制非事物）</th><br>        <th>以非事物方式执行，如果当前存在事物，则抛出异常</th><br>    </tr><br>    <tr><br>        <th>套事物</th><br>        <th>PROPAGATION_NESTED（嵌套事物）</th><br>        <th>如果当前存在事物，则在嵌套事物内执行。如果当前没有事物，则执行与PROPAGATION_REQUIRED类似的操作</th><br>    </tr><br></table><br>&nbsp;&nbsp;&nbsp;常用的事物传播机制：<br>&nbsp;&nbsp;&nbsp;PROPAGATION_REQUIRED:这是默认的传播机制<br>&nbsp;&nbsp;&nbsp;PROPAGATION_NOT_SUPPORTED:可以用于发送提示消息，站内信、短信、邮件提示等。不属于并且不影响主体业务逻辑，即使发送失败也不应该对主体业务逻辑回滚。<br>&nbsp;&nbsp;&nbsp;PROPAGATION_REQUIRES_NEW:总是新启一个事物，这个传播机制使用于不受父方法影响的操作，比如某些场景下要记录业务日志，用于异步反查，那么不管主体业务逻辑是否完成，日志都需要记录下来，不能因为主体业务逻辑报错而丢失日志。<br>&nbsp;&nbsp;<strong>spring 声明式事物使用动态代理来实现</strong></p>
+<p><table><tr><th>类别</th><th>事物传播类型</th><th>说明</th></tr><tr><th rowspan="3">支持当前事物</th><th>PROPAGATION_REQUIRED（必须的）</th><th>如果当前没有事物，就新建一个事物，如果已经存在一个事物，加入到这个事物中。这个是默认的</th></tr><tr><th>PROPAGATION_SUPPORTS（支持）</th><th>支持当前事物，如果当前没有事物，就以非事物方式执行</th></tr><tr><th>PROPAGATION_MANDATORY（强制）</th><th>使用当前的事物，如果当前没有事物，就抛出异常</th></tr><tr><th rowspan="3">不支持当前事物</th><th>PROPAGATION_REQUIRES_NEW（隔离）</th><th>新建事物，如果当前存在事物，就把当前事物挂起</th></tr><tr><th>PROPAGATION_NOT_SUPPORTED（不支持）</th><th>以非事物方式执行操作，如果当前存在事物，就把当前事物挂起</th></tr><tr><th>PROPAGATION_NEVER（强制非事物）</th><th>以非事物方式执行，如果当前存在事物，则抛出异常</th></tr><tr><th>套事物</th><th>PROPAGATION_NESTED（嵌套事物）</th><th>如果当前存在事物，则在嵌套事物内执行。如果当前没有事物，则执行与PROPAGATION_REQUIRED类似的操作</th></tr></table><br>&nbsp;&nbsp;&nbsp;常用的事物传播机制：<br>&nbsp;&nbsp;&nbsp;PROPAGATION_REQUIRED:这是默认的传播机制<br>&nbsp;&nbsp;&nbsp;PROPAGATION_NOT_SUPPORTED:可以用于发送提示消息，站内信、短信、邮件提示等。不属于并且不影响主体业务逻辑，即使发送失败也不应该对主体业务逻辑回滚。<br>&nbsp;&nbsp;&nbsp;PROPAGATION_REQUIRES_NEW:总是新启一个事物，这个传播机制使用于不受父方法影响的操作，比如某些场景下要记录业务日志，用于异步反查，那么不管主体业务逻辑是否完成，日志都需要记录下来，不能因为主体业务逻辑报错而丢失日志。<br>&nbsp;&nbsp;<strong>spring 声明式事物使用动态代理来实现</strong><br>&nbsp;&nbsp;参考代码示例：<a href="https://github.com/wayxue/spring-tx" target="_blank" rel="noopener">https://github.com/wayxue/spring-tx</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/12/11/spring-tx/" data-id="cjpjvhnt000007wjfa9pdhe2y" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/12/11/spring-tx/" data-id="cjswn8aet000f3wjf1hnya1f9" class="article-share-link">分享</a>
       
       
       
@@ -158,7 +158,7 @@
     
  <script src="/jquery/jquery.min.js"></script>
   <div id="random_posts">
-    <h2>Recommended Posts</h2>
+    <h2>推荐文章</h2>
     <div class="random_posts_ul">
       <script>
           var random_count =4
@@ -200,9 +200,18 @@
     
 <nav id="article-nav">
   
+    <a href="/2019/03/06/jdbcLog/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
   
     <a href="/2018/11/24/获取aop代理对象的三种方式/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Ouder</strong>
+      <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">如何获取 AOP 代理对象</div>
     </a>
   
@@ -239,9 +248,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">Recente berichten</h3>
+    <h3 class="widget-title recent-posts">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/03/06/jdbcLog/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2018/12/11/spring-tx/">spring 事物</a>
@@ -257,10 +270,6 @@
         
           <li>
             <a href="/2018/11/24/动态代理/">动态代理</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/24/String/">String</a>
           </li>
         
       </ul>
@@ -284,11 +293,11 @@
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2018 WayXue&nbsp;|&nbsp;
-      Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+      &copy; 2014 - 2019 WayXue&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">
-      Contact&nbsp;|&nbsp;yi_ta_qi@163.com
+      联系方式&nbsp;|&nbsp;yi_ta_qi@163.com
     </div>
   </div>
 </footer>

@@ -37,7 +37,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
@@ -65,6 +65,47 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-jdbcLog" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/06/jdbcLog/" class="article-date">
+  <time datetime="2019-03-06T03:27:50.387Z" itemprop="datePublished">2019-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <hr>
+<h2 id="title：输出不带“？”的完整sql语句的配置"><a href="#title：输出不带“？”的完整sql语句的配置" class="headerlink" title="title：输出不带“？”的完整sql语句的配置 "></a>title：输出不带“？”的完整sql语句的配置 </h2><ol>
+<li><p>pom.xml 中添加依赖包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.googlecode.log4jdbc&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;log4jdbc&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改数据源配置（以spring-boot application.properties 为例）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 修改前</span><br><span class="line">spring.datasource.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="line">spring.datasource.url=jdbc:mysql://localhost:3306/db_test?autoReconnect=true&amp;characterEncoding=utf-8</span><br><span class="line"># 修改后</span><br><span class="line">spring.datasource.driver-class-name=net.sf.log4jdbc.DriverSpy</span><br><span class="line">spring.datasource.url=jdbc:log4jdbc:mysql://localhost:3306/db_test?autoReconnect=true&amp;characterEncoding=utf-8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置 logback.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;configuration debug=&quot;false&quot;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径--&gt;</span><br><span class="line">    &lt;property name=&quot;LOG_HOME&quot; value=&quot;/web/logs&quot; /&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;!-- 控制台输出 --&gt;</span><br><span class="line">    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</span><br><span class="line">        &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">            &lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;</span><br><span class="line">            &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;appender name=&quot;FILE&quot;  class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">            &lt;!--日志文件输出的文件名--&gt;</span><br><span class="line">            &lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/app-%d&#123;yyyy-MM-dd&#125;.log&lt;/FileNamePattern&gt;</span><br><span class="line">            &lt;!--日志文件保留天数--&gt;</span><br><span class="line">            &lt;MaxHistory&gt;30&lt;/MaxHistory&gt;</span><br><span class="line">        &lt;/rollingPolicy&gt;</span><br><span class="line">        &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;</span><br><span class="line">            &lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;</span><br><span class="line">            &lt;pattern&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">        &lt;!--日志文件最大的大小--&gt;</span><br><span class="line">        &lt;triggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">            &lt;MaxFileSize&gt;10MB&lt;/MaxFileSize&gt;</span><br><span class="line">        &lt;/triggeringPolicy&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    &lt;!--自定义 appender--&gt;</span><br><span class="line">	&lt;appender name=&quot;mine&quot; class=&quot;com.osa.platform.filter.MyAppender&quot;&gt;&lt;/appender&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;logger name=&quot;jdbc.connection&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.resultset&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.resultsettable&quot; level=&quot;INFO&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.audit&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.sqltiming&quot; level=&quot;INFO&quot;/&gt;</span><br><span class="line">    &lt;logger name=&quot;jdbc.sqlonly&quot; level=&quot;OFF&quot;/&gt;</span><br><span class="line">    </span><br><span class="line"> &lt;!-- 日志输出级别 --&gt;</span><br><span class="line">    &lt;root level=&quot;INFO&quot;&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;FILE&quot; /&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;mine&quot; /&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line">    </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2019/03/06/jdbcLog/" data-id="cjswn8ae400043wjfvuektdte" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
     <article id="post-spring-tx" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/12/11/spring-tx/" class="article-date">
@@ -90,9 +131,9 @@
         <!-- Table of Contents -->
         
         <ol>
-<li>数据库事物的基本特性<br>&nbsp;&nbsp;<strong>A</strong> :原子性（atomicity）：事物中各项操作，要么全部执行，要么全部不执行。<br>&nbsp;&nbsp;<strong>C</strong> :一致性（consistency）：事物结束后系统状态是一致的。<br>&nbsp;&nbsp;<strong>I</strong> :隔离性（isolation）：并发执行的事物彼此无法看到对方的中间状态。<br>&nbsp;&nbsp;<strong>D</strong> :持久性（durability）：事物完成后所做的改动都会被持久化，即使发生灾难性的失败。<br>&nbsp;&nbsp;在高并发的情况下，要完全保证其ACID特性是非常困难的，除非把所有的事物串行化执行，但带来的负面影响将是性能大打折扣。数据库中存在四种隔离级别，可基于业务进行选择。  </li>
+<li>数据库事物的基本特性<br>&nbsp;&nbsp;<strong>A</strong> :原子性（atomicity）：事物中各项操作，要么全部执行，要么全部不执行。<br>&nbsp;&nbsp;<strong>C</strong> :一致性（consistency）：事物结束后系统状态是一致的。<br>&nbsp;&nbsp;<strong>I</strong> :隔离性（isolation）：并发执行的事物彼此无法看到对方的中间状态。<br>&nbsp;&nbsp;<strong>D</strong> :持久性（durability）：事物完成后所做的改动都会被持久化，即使发生灾难性的失败。<br>&nbsp;&nbsp;在高并发的情况下，要完全保证其ACID特性是非常困难的，除非把所有的事物串行化执行，但带来的负面影响将是性能大打折扣。数据库中存在四种隔离级别，可基于业务进行选择。</li>
 </ol>
-<p><table><br>    <tr><br>        <th>隔离级别</th><br>        <th>脏读(dirty read)</th><br>        <th>不可重复读(non repeatable read)</th><br>        <th>幻读(phantom read)</th><br>    </tr><br>    <tr><br>        <th>读未提交(read uncommitted)</th><br>        <th>maybe</th><br>        <th>maybe</th><br>        <th>maybe</th><br>    </tr><br>    <tr><br>        <th>读已提交(read committed)</th><br>        <th>n</th><br>        <th>maybe</th><br>        <th>maybe</th><br>    </tr><br>    <tr><br>        <th>可重复读(repeatable read)</th><br>        <th>n</th><br>        <th>n</th><br>        <th>maybe</th><br>    </tr><br>    <tr><br>        <th>串行化(serializable)</th><br>        <th>n</th><br>        <th>n</th><br>        <th>n</th><br>    </tr><br></table><br>&nbsp;&nbsp;脏读:一个事物读取到另一个事物未提交的更新数据<br>&nbsp;&nbsp;不可重复读：在同一事物中，多次读取同一数据返回的结果有所不同，换句话说，后续读取可以读取到另一事物的已提交更新数据。相反，“可重复读”在同一事物中多次读取数据时，能够保证所读数据一样，也就是后续读取不能读取到另一事物已提交的更新数据。<br>&nbsp;&nbsp;幻读：查询表中一条数据如果不存在就插入一条，并发的时候却发现，里面居然有两条相同的数据。这就是幻读的问题。<br>&nbsp;&nbsp;for example<br>&nbsp;&nbsp;数据库默认隔离级别：<br>&nbsp;&nbsp;&nbsp;oracle 中默认级别是 read committed<br>&nbsp;&nbsp;&nbsp;mysql 中默认级别是 repeatable read，每个查询语句默认都是一个独立的事物。<br>&nbsp;&nbsp;&nbsp;mysql 查看默认级别的命令：SELECT @@tx_isolation 或者 SELECT @@transaction_isolation(用于高版本)  </p>
+<p><table><tr><th>隔离级别</th><th>脏读(dirty read)</th><th>不可重复读(non repeatable read)</th><th>幻读(phantom read)</th></tr><tr><th>读未提交(read uncommitted)</th><th>maybe</th><th>maybe</th><th>maybe</th></tr><tr><th>读已提交(read committed)</th><th>n</th><th>maybe</th><th>maybe</th></tr><tr><th>可重复读(repeatable read)</th><th>n</th><th>n</th><th>maybe</th></tr><tr><th>串行化(serializable)</th><th>n</th><th>n</th><th>n</th></tr></table><br>&nbsp;&nbsp;脏读:一个事物读取到另一个事物未提交的更新数据<br>&nbsp;&nbsp;不可重复读：在同一事物中，多次读取同一数据返回的结果有所不同，换句话说，后续读取可以读取到另一事物的已提交更新数据。相反，“可重复读”在同一事物中多次读取数据时，能够保证所读数据一样，也就是后续读取不能读取到另一事物已提交的更新数据。<br>&nbsp;&nbsp;幻读：查询表中一条数据如果不存在就插入一条，并发的时候却发现，里面居然有两条相同的数据。这就是幻读的问题。<br>&nbsp;&nbsp;for example<br>&nbsp;&nbsp;数据库默认隔离级别：<br>&nbsp;&nbsp;&nbsp;oracle 中默认级别是 read committed<br>&nbsp;&nbsp;&nbsp;mysql 中默认级别是 repeatable read，每个查询语句默认都是一个独立的事物。<br>&nbsp;&nbsp;&nbsp;mysql 查看默认级别的命令：SELECT @@tx_isolation 或者 SELECT @@transaction_isolation(用于高版本)  </p>
 <ol>
 <li>spring 事物<br>&nbsp;&nbsp;spring 事物是在数据库事物的基础上进行了封装扩展，其主要特性如下：<br>&nbsp;&nbsp;&nbsp;a. 支持原有数据库事物的隔离级别<br>&nbsp;&nbsp;&nbsp;b. 加入了事物传播的概念，提供多个事物的合并或者隔离的功能<br>&nbsp;&nbsp;&nbsp;c. 提供声明式事物，让业务代码与事物隔离，事物变得更易用<br>&nbsp;&nbsp;2.1 spring 事物相关api说明<br>&nbsp;&nbsp;&nbsp;spring 提供了三个接口来使用事物。  </li>
 </ol>
@@ -137,12 +178,12 @@
     &lt;tx:annotation-driven transaction-manager=&quot;txManager&quot;&gt;&lt;/tx:annotation-driven&gt;
 &lt;/beans&gt;
 </code></pre><p>&nbsp;&nbsp;2.4 spring 事物传播机制  </p>
-<p><table><br>    <tr><br>        <th>类别</th><br>        <th>事物传播类型</th><br>        <th>说明</th><br>    </tr><br>    <tr><br>        <th rowspan="3">支持当前事物</th><br>        <th>PROPAGATION_REQUIRED（必须的）</th><br>        <th>如果当前没有事物，就新建一个事物，如果已经存在一个事物，加入到这个事物中。这个是默认的</th><br>    </tr><br>    <tr><br>        <th>PROPAGATION_SUPPORTS（支持）</th><br>        <th>支持当前事物，如果当前没有事物，就以非事物方式执行</th><br>    </tr><br>    <tr><br>        <th>PROPAGATION_MANDATORY（强制）</th><br>        <th>使用当前的事物，如果当前没有事物，就抛出异常</th><br>    </tr><br>    <tr><br>        <th rowspan="3">不支持当前事物</th><br>        <th>PROPAGATION_REQUIRES_NEW（隔离）</th><br>        <th>新建事物，如果当前存在事物，就把当前事物挂起</th><br>    </tr><br>    <tr><br>        <th>PROPAGATION_NOT_SUPPORTED（不支持）</th><br>        <th>以非事物方式执行操作，如果当前存在事物，就把当前事物挂起</th><br>    </tr><br>    <tr><br>        <th>PROPAGATION_NEVER（强制非事物）</th><br>        <th>以非事物方式执行，如果当前存在事物，则抛出异常</th><br>    </tr><br>    <tr><br>        <th>套事物</th><br>        <th>PROPAGATION_NESTED（嵌套事物）</th><br>        <th>如果当前存在事物，则在嵌套事物内执行。如果当前没有事物，则执行与PROPAGATION_REQUIRED类似的操作</th><br>    </tr><br></table><br>&nbsp;&nbsp;&nbsp;常用的事物传播机制：<br>&nbsp;&nbsp;&nbsp;PROPAGATION_REQUIRED:这是默认的传播机制<br>&nbsp;&nbsp;&nbsp;PROPAGATION_NOT_SUPPORTED:可以用于发送提示消息，站内信、短信、邮件提示等。不属于并且不影响主体业务逻辑，即使发送失败也不应该对主体业务逻辑回滚。<br>&nbsp;&nbsp;&nbsp;PROPAGATION_REQUIRES_NEW:总是新启一个事物，这个传播机制使用于不受父方法影响的操作，比如某些场景下要记录业务日志，用于异步反查，那么不管主体业务逻辑是否完成，日志都需要记录下来，不能因为主体业务逻辑报错而丢失日志。<br>&nbsp;&nbsp;<strong>spring 声明式事物使用动态代理来实现</strong></p>
+<p><table><tr><th>类别</th><th>事物传播类型</th><th>说明</th></tr><tr><th rowspan="3">支持当前事物</th><th>PROPAGATION_REQUIRED（必须的）</th><th>如果当前没有事物，就新建一个事物，如果已经存在一个事物，加入到这个事物中。这个是默认的</th></tr><tr><th>PROPAGATION_SUPPORTS（支持）</th><th>支持当前事物，如果当前没有事物，就以非事物方式执行</th></tr><tr><th>PROPAGATION_MANDATORY（强制）</th><th>使用当前的事物，如果当前没有事物，就抛出异常</th></tr><tr><th rowspan="3">不支持当前事物</th><th>PROPAGATION_REQUIRES_NEW（隔离）</th><th>新建事物，如果当前存在事物，就把当前事物挂起</th></tr><tr><th>PROPAGATION_NOT_SUPPORTED（不支持）</th><th>以非事物方式执行操作，如果当前存在事物，就把当前事物挂起</th></tr><tr><th>PROPAGATION_NEVER（强制非事物）</th><th>以非事物方式执行，如果当前存在事物，则抛出异常</th></tr><tr><th>套事物</th><th>PROPAGATION_NESTED（嵌套事物）</th><th>如果当前存在事物，则在嵌套事物内执行。如果当前没有事物，则执行与PROPAGATION_REQUIRED类似的操作</th></tr></table><br>&nbsp;&nbsp;&nbsp;常用的事物传播机制：<br>&nbsp;&nbsp;&nbsp;PROPAGATION_REQUIRED:这是默认的传播机制<br>&nbsp;&nbsp;&nbsp;PROPAGATION_NOT_SUPPORTED:可以用于发送提示消息，站内信、短信、邮件提示等。不属于并且不影响主体业务逻辑，即使发送失败也不应该对主体业务逻辑回滚。<br>&nbsp;&nbsp;&nbsp;PROPAGATION_REQUIRES_NEW:总是新启一个事物，这个传播机制使用于不受父方法影响的操作，比如某些场景下要记录业务日志，用于异步反查，那么不管主体业务逻辑是否完成，日志都需要记录下来，不能因为主体业务逻辑报错而丢失日志。<br>&nbsp;&nbsp;<strong>spring 声明式事物使用动态代理来实现</strong><br>&nbsp;&nbsp;参考代码示例：<a href="https://github.com/wayxue/spring-tx" target="_blank" rel="noopener">https://github.com/wayxue/spring-tx</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/12/11/spring-tx/" data-id="cjpjvhnt000007wjfa9pdhe2y" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/12/11/spring-tx/" data-id="cjswn8aet000f3wjf1hnya1f9" class="article-share-link">分享</a>
       
       
       
@@ -211,7 +252,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/获取aop代理对象的三种方式/" data-id="cjp17ffw4000evwjfs3iuh32x" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/获取aop代理对象的三种方式/" data-id="cjswn8aep000d3wjfbq1ao5ej" class="article-share-link">分享</a>
       
       
       
@@ -256,7 +297,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/统一 http 接口的实现/" data-id="cjp17ffw2000dvwjfql2ze4d5" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/统一 http 接口的实现/" data-id="cjswn8ael000b3wjfeq1kop4d" class="article-share-link">分享</a>
       
       
       
@@ -321,7 +362,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/动态代理/" data-id="cjp17ffw1000cvwjf4ra7qv4e" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/动态代理/" data-id="cjswn8aen000c3wjflep822cc" class="article-share-link">分享</a>
       
       
       
@@ -372,7 +413,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/String/" data-id="cjp17ffv00000vwjfqik2x6iz" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/String/" data-id="cjswn8ae200033wjfwnm01czc" class="article-share-link">分享</a>
       
       
       
@@ -413,7 +454,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/spring boot 使用servlet/" data-id="cjp17ffvz000bvwjfkrhfz81y" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/spring boot 使用servlet/" data-id="cjswn8aeh000a3wjf4pwok9tr" class="article-share-link">分享</a>
       
       
       
@@ -457,7 +498,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/remote debug/" data-id="cjp17ffvu0009vwjfywdy761u" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/remote debug/" data-id="cjswn8aeb00073wjfbbxx3kt0" class="article-share-link">分享</a>
       
       
       
@@ -579,7 +620,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/PLSQL 程序性能分析及优化/" data-id="cjp17ffvd0002vwjfg10q3qyc" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/PLSQL 程序性能分析及优化/" data-id="cjswn8aeu000g3wjfuha1iy93" class="article-share-link">分享</a>
       
       
       
@@ -628,62 +669,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/mysql大量数据的查询与更新/" data-id="cjp17ffvw000avwjflu4bsqro" class="article-share-link">Delen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
- 
-
-
-  
-    <article id="post-MySQL 分库分表" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/24/MySQL 分库分表/" class="article-date">
-  <time datetime="2018-11-24T13:04:16.752Z" itemprop="datePublished">2018-11-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/24/MySQL 分库分表/">MySQL 分库分表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- Table of Contents -->
-        
-        <h2 id="MySQL-官方读写分离方案"><a href="#MySQL-官方读写分离方案" class="headerlink" title="MySQL 官方读写分离方案"></a>MySQL 官方读写分离方案</h2><p><img src="/image/MySQL-proxy.png" alt=""></p>
-<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><ol>
-<li>类型<br>1.1 垂直<br>把一个属性比较多、行的数据比较大的库（表）的属性拆分成不同表，用这种方式来降低单库（表）大小达到提高性能的目的。<br>特点：<br>a.每个库（表）的结构都不一样<br>b.每个库（表）的数据都至少有一列一样<br>c.每个库（表）的并集是全量数据<br>1.2 水平<br>以某个字段按照一定的规律（取模）将一个表的数据分到多个库（表）中<br>特点：<br>a.每个库（表）的结构都一样<br>b.每个库（表）的数据都不一样<br>c.每个库（表）的并集是全量数据</li>
-<li>分库策略<br>2.1 Hash 取模（通过表的一列字段进行 hash code % 1024）<br>2.2 Range 范围分区<br>2.3 List 预定义</li>
-</ol>
-<h2 id="分库分表需要注意的问题"><a href="#分库分表需要注意的问题" class="headerlink" title="分库分表需要注意的问题"></a>分库分表需要注意的问题</h2><ol>
-<li>多数据源管理（proxy）</li>
-<li>跨事物处理（避免）</li>
-<li>查询数据的结构集合并（改写）</li>
-<li>分布式全局唯一id</li>
-</ol>
-<h2 id="水平拆分"><a href="#水平拆分" class="headerlink" title="水平拆分"></a>水平拆分</h2><ol>
-<li>路由算法<br>假设有四个数据库，将四个数据库分别定义为四分区间：<br>a.0-255 b.256-511 c.512-767 d.768-1023<br>将表中一个字段的hash值模于1024,根据计算出的结果找出数据库定义的区间。（333 属于 b）</li>
-<li>一致性Hash<br>a.一个库需要拆分为两个时，拆分后的库所对应的的hash区间之和要与拆分之前一致。<br>b.两个库合并为一个库时，合并后的库所对应的的hash区间要与合并之前两个库的hash区间之和一致</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/MySQL 分库分表/" data-id="cjp17ffva0001vwjfd9ca4gau" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/mysql大量数据的查询与更新/" data-id="cjswn8ae900063wjf4k7yrho1" class="article-share-link">分享</a>
       
       
       
@@ -698,7 +684,7 @@
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Volgende&raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页&raquo;</a>
   </nav>
 </section>
            
@@ -736,9 +722,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">Recente berichten</h3>
+    <h3 class="widget-title recent-posts">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/03/06/jdbcLog/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2018/12/11/spring-tx/">spring 事物</a>
@@ -756,10 +746,6 @@
             <a href="/2018/11/24/动态代理/">动态代理</a>
           </li>
         
-          <li>
-            <a href="/2018/11/24/String/">String</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -767,9 +753,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title archive">Archieven</h3>
+    <h3 class="widget-title archive">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">15</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">15</span></li></ul>
     </div>
   </div>
 
@@ -812,11 +798,11 @@
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2018 WayXue&nbsp;|&nbsp;
-      Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+      &copy; 2014 - 2019 WayXue&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">
-      Contact&nbsp;|&nbsp;yi_ta_qi@163.com
+      联系方式&nbsp;|&nbsp;yi_ta_qi@163.com
     </div>
   </div>
 </footer>

@@ -37,7 +37,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yitaqi.top"></form>
@@ -64,6 +64,61 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-MySQL 分库分表" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/24/MySQL 分库分表/" class="article-date">
+  <time datetime="2018-11-24T13:04:16.752Z" itemprop="datePublished">2018-11-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/24/MySQL 分库分表/">MySQL 分库分表</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h2 id="MySQL-官方读写分离方案"><a href="#MySQL-官方读写分离方案" class="headerlink" title="MySQL 官方读写分离方案"></a>MySQL 官方读写分离方案</h2><p><img src="/image/MySQL-proxy.png" alt=""></p>
+<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><ol>
+<li>类型<br>1.1 垂直<br>把一个属性比较多、行的数据比较大的库（表）的属性拆分成不同表，用这种方式来降低单库（表）大小达到提高性能的目的。<br>特点：<br>a.每个库（表）的结构都不一样<br>b.每个库（表）的数据都至少有一列一样<br>c.每个库（表）的并集是全量数据<br>1.2 水平<br>以某个字段按照一定的规律（取模）将一个表的数据分到多个库（表）中<br>特点：<br>a.每个库（表）的结构都一样<br>b.每个库（表）的数据都不一样<br>c.每个库（表）的并集是全量数据</li>
+<li>分库策略<br>2.1 Hash 取模（通过表的一列字段进行 hash code % 1024）<br>2.2 Range 范围分区<br>2.3 List 预定义</li>
+</ol>
+<h2 id="分库分表需要注意的问题"><a href="#分库分表需要注意的问题" class="headerlink" title="分库分表需要注意的问题"></a>分库分表需要注意的问题</h2><ol>
+<li>多数据源管理（proxy）</li>
+<li>跨事物处理（避免）</li>
+<li>查询数据的结构集合并（改写）</li>
+<li>分布式全局唯一id</li>
+</ol>
+<h2 id="水平拆分"><a href="#水平拆分" class="headerlink" title="水平拆分"></a>水平拆分</h2><ol>
+<li>路由算法<br>假设有四个数据库，将四个数据库分别定义为四分区间：<br>a.0-255 b.256-511 c.512-767 d.768-1023<br>将表中一个字段的hash值模于1024,根据计算出的结果找出数据库定义的区间。（333 属于 b）</li>
+<li>一致性Hash<br>a.一个库需要拆分为两个时，拆分后的库所对应的的hash区间之和要与拆分之前一致。<br>b.两个库合并为一个库时，合并后的库所对应的的hash区间要与合并之前两个库的hash区间之和一致</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yitaqi.top/2018/11/24/MySQL 分库分表/" data-id="cjswn8ady00013wjfo1kxlxrk" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
   
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -102,7 +157,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/hello-world/" data-id="cjp17ffvs0008vwjf7j59urh3" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/hello-world/" data-id="cjswn8aef00093wjf1e6anw5w" class="article-share-link">分享</a>
       
       
       
@@ -151,7 +206,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/gitlab配置/" data-id="cjp17ffvq0007vwjfbo556347" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/gitlab配置/" data-id="cjswn8aed00083wjfalb9d74n" class="article-share-link">分享</a>
       
       
       
@@ -197,7 +252,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/excellent/" data-id="cjp17ffvn0006vwjfyjyf8rz3" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/excellent/" data-id="cjswn8ae100023wjffmpn198u" class="article-share-link">分享</a>
       
       
       
@@ -299,7 +354,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/distribute-trasaction/" data-id="cjp17ffvk0005vwjfub6roeiq" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/distribute-trasaction/" data-id="cjswn8ae600053wjfx795t8du" class="article-share-link">分享</a>
       
       
       
@@ -349,7 +404,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/comparators/" data-id="cjp17ffvh0004vwjfwz1pj42c" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/comparators/" data-id="cjswn8adq00003wjfwts2u50e" class="article-share-link">分享</a>
       
       
       
@@ -392,7 +447,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yitaqi.top/2018/11/24/binary tree/" data-id="cjp17ffvf0003vwjfpo3634q5" class="article-share-link">Delen</a>
+      <a data-url="http://yitaqi.top/2018/11/24/binary tree/" data-id="cjswn8aeq000e3wjf1yx6y2f8" class="article-share-link">分享</a>
       
       
       
@@ -407,7 +462,7 @@ IdentityFile ~/.ssh/gitlab_id_rsa
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/">&laquo; Vorige</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
   </nav>
 </section>
            
@@ -425,9 +480,13 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">Recente berichten</h3>
+    <h3 class="widget-title recent-posts">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/03/06/jdbcLog/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2018/12/11/spring-tx/">spring 事物</a>
@@ -443,10 +502,6 @@ IdentityFile ~/.ssh/gitlab_id_rsa
         
           <li>
             <a href="/2018/11/24/动态代理/">动态代理</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/24/String/">String</a>
           </li>
         
       </ul>
@@ -470,11 +525,11 @@ IdentityFile ~/.ssh/gitlab_id_rsa
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2018 WayXue&nbsp;|&nbsp;
-      Theme by <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+      &copy; 2014 - 2019 WayXue&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">
-      Contact&nbsp;|&nbsp;yi_ta_qi@163.com
+      联系方式&nbsp;|&nbsp;yi_ta_qi@163.com
     </div>
   </div>
 </footer>
